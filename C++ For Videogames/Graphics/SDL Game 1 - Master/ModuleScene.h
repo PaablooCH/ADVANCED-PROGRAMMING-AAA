@@ -1,8 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "SDL/include/SDL.h"
 
 struct SDL_Texture;
+struct SDL_Rect;
 
 class ModuleScene : public Module
 {
@@ -18,5 +20,6 @@ public:
 
 private:
 	SDL_Texture* scene;
+	SDL_Rect section;
 };
 

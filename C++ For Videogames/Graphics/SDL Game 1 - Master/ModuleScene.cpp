@@ -25,12 +25,19 @@ void ModuleScene::Start()
 
 update_status ModuleScene::Update()
 {
-	SDL_Rect section;
-	section.x = 0;
-	section.y = 0;
-	section.w = 500;
-	section.h = 500;
+	section.x = 72;
+	section.y = 210;
+	section.w = 768;
+	section.h = 176;
 	App->renderer->Blit(scene, 0, 0, &section);
+
+	SDL_Rect sectionFloor;
+	sectionFloor.x = 8;
+	sectionFloor.y = 392;
+	sectionFloor.w = 896;
+	sectionFloor.h = 72;
+	App->renderer->Blit(scene, 0, 176, &sectionFloor);
+
 	return UPDATE_CONTINUE;
 }
 
