@@ -18,6 +18,8 @@ public:
 	update_status Update() override;
 	bool CleanUp();
 
+	int movement;
+
 private:
 	SDL_Texture* scene;
 	SDL_Rect section;

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "SDL/include/SDL.h"
+#include "ModuleScene.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -38,6 +39,14 @@ update_status ModuleInput::Update()
 	if (keyboard[SDL_SCANCODE_ESCAPE]) {
 		App->CleanUp();
 		return UPDATE_STOP;
+	}
+
+	if (keyboard[SDL_SCANCODE_RIGHT]) {
+		App->scene->movement += 1;
+	}
+
+	if (keyboard[SDL_SCANCODE_LEFT]) {
+		App->scene->movement -= 1;
 	}
 
 	return UPDATE_CONTINUE;
