@@ -17,11 +17,15 @@ public:
 	void Start() override;
 	update_status Update() override;
 	bool CleanUp();
-
-	int movement;
+	void move(int move);
 
 private:
 	SDL_Texture* scene;
 	SDL_Rect section;
+	SDL_Rect sectionFloor;
+	SDL_Rect sectionFlag;
+	int movement;
+	int iterations;
+	void sumIteration();
 };
 

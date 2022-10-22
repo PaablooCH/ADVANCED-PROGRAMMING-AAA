@@ -42,11 +42,11 @@ update_status ModuleInput::Update()
 	}
 
 	if (keyboard[SDL_SCANCODE_RIGHT]) {
-		App->scene->movement += 1;
+		App->scene->move(+1);
 	}
 
 	if (keyboard[SDL_SCANCODE_LEFT]) {
-		App->scene->movement -= 1;
+		App->scene->move(-1);
 	}
 
 	return UPDATE_CONTINUE;
