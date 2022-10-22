@@ -38,6 +38,8 @@ bool ModuleRender::Init()
 
 	glEnable(GL_DEPTH_TEST); // Enable depth test
 	glEnable(GL_CULL_FACE); // Enable cull backward faces
+	glDisable(GL_SCISSOR_TEST); // Not going to use scissor test for now
+	glDisable(GL_STENCIL_TEST); // Not going to use stencil test for now
 	glFrontFace(GL_CCW); // Front faces will be counter clockwise
 
 	return true;
@@ -48,7 +50,7 @@ update_status ModuleRender::PreUpdate()
 	int h, w;
 	SDL_GetWindowSize(App->window->window, &w, &h);
 	glViewport(0, 0, w, h);
-	glClearColor(1.f, 0.f, 0.f, 1.0f);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	return UPDATE_CONTINUE;
 }
