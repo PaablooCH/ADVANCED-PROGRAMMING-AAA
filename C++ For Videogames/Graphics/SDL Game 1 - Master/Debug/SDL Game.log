@@ -1,2 +1,11 @@
-﻿  ModuleScene.cpp
+﻿  Application.cpp
+  log.cpp
+  Main.cpp
+  Module.cpp
+  ModuleInput.cpp
+  ModuleRender.cpp
+  ModuleScene.cpp
+  ModuleTextures.cpp
+  ModuleWindow.cpp
+  Generating Code...
   SDL Game.vcxproj -> E:\Github\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\SDL Game 1 - Master\Debug\SDL Game - Master 1.exe
