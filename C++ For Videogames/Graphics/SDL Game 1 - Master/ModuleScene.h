@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "SDL/include/SDL.h"
+#include <vector>
 
 struct SDL_Texture;
 struct SDL_Rect;
@@ -23,9 +24,9 @@ private:
 	SDL_Texture* scene;
 	SDL_Rect section;
 	SDL_Rect sectionFloor;
-	SDL_Rect sectionFlag;
 	int movement;
 	int iterations;
 	void sumIteration();
+	std::vector<SDL_Rect> flag;
 };
 
