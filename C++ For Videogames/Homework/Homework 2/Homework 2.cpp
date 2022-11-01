@@ -9,8 +9,19 @@ int main()
     String b(std::move(a));
     a.Write();
     b.Write();
-    cout << a.lenght() << endl;
+    String c = a + b;
+    c.Write();
+    if (c == "hellohello") {
+        cout << "Son iguales" << endl;
+    }
+    else {
+        cout << "No son iguales" << endl;
+    }
+    cout << a.Lenght() << endl;
     a.clear();
-    cout << a.lenght() << endl;
-    cout << "Hello World!\n";
+    cout << a.Lenght() << endl;
+    a = b;
+    a.Write();
+    cout << a.Lenght() << endl;
+
 }

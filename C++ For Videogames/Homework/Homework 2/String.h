@@ -4,14 +4,17 @@ class String
 public:
 	String(const char* str);
 	String(const String&& a);
-	int lenght();
+	inline int Lenght() {
+		return lenght;
+	};
 	void clear();
 	String& operator= (const String& a);
-	String& operator== (String&& a);
-	String& operator+ (String a);
+	bool operator== (const char* a);
+	String operator+ (const String& a);
 	void Write();
 
 private:
 	const char* string;
+	int lenght;
 };
 
