@@ -1,10 +1,2 @@
-﻿  Application.cpp
-  log.cpp
-  Main.cpp
-  ModuleInput.cpp
-  ModuleProgram.cpp
-  ModuleRender.cpp
-  ModuleRenderExercise.cpp
-  ModuleWindow.cpp
-  Generating Code...
+﻿  ModuleEditor.cpp
   Engine.vcxproj -> C:\Users\pabloch2\Documents\GitHub\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\x64\Debug\Engine.exe

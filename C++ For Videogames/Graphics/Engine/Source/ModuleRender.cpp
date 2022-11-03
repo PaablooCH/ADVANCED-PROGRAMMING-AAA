@@ -3,7 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "SDL.h"
-#include "glew-2.1.0/include/GL/glew.h"
+#include "GL/glew.h"
 
 ModuleRender::ModuleRender()
 {
@@ -24,7 +24,7 @@ ModuleRender::~ModuleRender()
 // Called before render is available
 bool ModuleRender::Init()
 {
-	SDL_GL_CreateContext(App->window->window);
+	context = SDL_GL_CreateContext(App->window->window);
 
 	LOG("Creating Renderer context");
 

@@ -1,7 +1,7 @@
 #include "ModuleRenderExercise.h"
 #include "Application.h"
 #include "ModuleProgram.h"
-#include "glew-2.1.0/include/GL/glew.h"
+#include "GL/glew.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
 {

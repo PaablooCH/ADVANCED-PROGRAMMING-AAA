@@ -1,7 +1,7 @@
 #include "ModuleProgram.h"
 #include "Globals.h"
 #include "Application.h"
-#include "glew-2.1.0/include/GL/glew.h"
+#include "GL/glew.h"
 #include <stdio.h>
 
 ModuleProgram::ModuleProgram()
