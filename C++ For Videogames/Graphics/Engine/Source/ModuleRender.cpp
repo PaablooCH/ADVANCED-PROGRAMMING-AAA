@@ -42,6 +42,8 @@ bool ModuleRender::Init()
 	glDisable(GL_STENCIL_TEST); // Not going to use stencil test for now
 	glFrontFace(GL_CCW); // Front faces will be counter clockwise
 
+	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+
 	return true;
 }
 
@@ -50,7 +52,7 @@ update_status ModuleRender::PreUpdate()
 	int h, w;
 	SDL_GetWindowSize(App->window->window, &w, &h);
 	glViewport(0, 0, w, h);
-	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	//glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	return UPDATE_CONTINUE;
 }
@@ -64,7 +66,6 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
-	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
