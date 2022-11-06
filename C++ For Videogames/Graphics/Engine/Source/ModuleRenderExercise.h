@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "MathGeoLib/Math/float4x4.h"
 
 class ModuleRenderExercise : public Module
 {
@@ -13,6 +14,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 private:
+	float4x4 GetProj();
 	int program;
 	unsigned vbo;
 };

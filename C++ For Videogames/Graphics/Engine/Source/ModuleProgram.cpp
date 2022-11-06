@@ -46,7 +46,7 @@ int ModuleProgram::CompileShader(GLenum type, const char* source)
 			int written = 0;
 			char* info = (char*)malloc(len);
 			glGetShaderInfoLog(shaderId, len, &written, info);
-			LOG("Log Info: %s", info);
+			LOG_ENGINE("Log Info: %s", info);
 			free(info);
 		}
 	}
@@ -74,7 +74,7 @@ int ModuleProgram::CreateProgram()
 			int written = 0;
 			char* info = (char*)malloc(len);
 			glGetProgramInfoLog(programId, len, &written, info);
-			LOG("Program Log Info: %s", info);
+			LOG_ENGINE("Program Log Info: %s", info);
 			free(info);
 		}
 	}

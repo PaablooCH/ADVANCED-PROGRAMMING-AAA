@@ -1789,13 +1789,13 @@ const char* ImStrSkipBlank(const char* str)
 #ifndef IMGUI_DISABLE_DEFAULT_FORMAT_FUNCTIONS
 
 // We support stb_sprintf which is much faster (see: https://github.com/nothings/stb/blob/master/stb_sprintf.h)
-// You may set IMGUI_USE_STB_SPRINTF to use our default wrapper, or set IMGUI_DISABLE_DEFAULT_FORMAT_FUNCTIONS
+// You may set IMGUI_USE_STB_sprintf to use our default wrapper, or set IMGUI_DISABLE_DEFAULT_FORMAT_FUNCTIONS
 // and setup the wrapper yourself. (FIXME-OPT: Some of our high-level operations such as ImGuiTextBuffer::appendfv() are
 // designed using two-passes worst case, which probably could be improved using the stbsp_vsprintfcb() function.)
-#ifdef IMGUI_USE_STB_SPRINTF
-#define STB_SPRINTF_IMPLEMENTATION
-#ifdef IMGUI_STB_SPRINTF_FILENAME
-#include IMGUI_STB_SPRINTF_FILENAME
+#ifdef IMGUI_USE_STB_sprintf
+#define STB_sprintf_IMPLEMENTATION
+#ifdef IMGUI_STB_sprintf_FILENAME
+#include IMGUI_STB_sprintf_FILENAME
 #else
 #include "stb_sprintf.h"
 #endif
@@ -1809,7 +1809,7 @@ int ImFormatString(char* buf, size_t buf_size, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
-#ifdef IMGUI_USE_STB_SPRINTF
+#ifdef IMGUI_USE_STB_sprintf
     int w = stbsp_vsnprintf(buf, (int)buf_size, fmt, args);
 #else
     int w = vsnprintf(buf, buf_size, fmt, args);
@@ -1825,7 +1825,7 @@ int ImFormatString(char* buf, size_t buf_size, const char* fmt, ...)
 
 int ImFormatStringV(char* buf, size_t buf_size, const char* fmt, va_list args)
 {
-#ifdef IMGUI_USE_STB_SPRINTF
+#ifdef IMGUI_USE_STB_sprintf
     int w = stbsp_vsnprintf(buf, (int)buf_size, fmt, args);
 #else
     int w = vsnprintf(buf, buf_size, fmt, args);
