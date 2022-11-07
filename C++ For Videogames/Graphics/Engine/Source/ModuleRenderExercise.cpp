@@ -3,10 +3,9 @@
 #include "Globals.h"
 #include "ModuleProgram.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleCamera.h"
 #include "GL/glew.h"
-#include "MathGeoLib/Math/float4x4.h"
 #include "MathGeoLib/Geometry/Frustum.h"
-#include <iostream>
 
 ModuleRenderExercise::ModuleRenderExercise()
 {
@@ -25,13 +24,6 @@ bool ModuleRenderExercise::Init()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vtx_data), vtx_data, GL_STATIC_DRAW);
 	program = App->program->CreateProgram();
 
-	frustum = new Frustum();
-	frustum->SetKind(FrustumSpaceGL, FrustumRightHanded);
-	float aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-	frustum->SetFrame(float3(0,4,8), -float3::unitZ, float3::unitY);
-	frustum->SetViewPlaneDistances(0.1f, 100.0f);
-	frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * 90, aspect);
-
 	return true;
 }
 
@@ -46,8 +38,8 @@ update_status ModuleRenderExercise::Update()
 	model = float4x4::FromTRS(	float3(2.0f, 0.0f, 0.0f),
 								float4x4::RotateZ(pi / 4.0f),
 								float3(2.0f, 1.0f, 1.0f));
-	view = frustum->ViewMatrix();
-	proj = frustum->ProjectionMatrix();
+	view = App->camera->GetViewMatrix();
+	proj = App->camera->ProjectionMatrix();
 
 	glUseProgram(program);
 	glUniformMatrix4fv(0, 1, GL_TRUE, &proj[0][0]);
@@ -77,6 +69,5 @@ bool ModuleRenderExercise::CleanUp()
 {
 	glDeleteProgram(program);
 	glDeleteBuffers(1, &vbo);
-	delete frustum;
 	return true;
 }

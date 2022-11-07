@@ -1,6 +1,5 @@
 #pragma once
 #include "Module.h"
-#include "MathGeoLib/Math/float4x4.h"
 
 class ModuleRenderExercise : public Module
 {
@@ -16,6 +15,6 @@ public:
 private:
 	int program;
 	unsigned vbo;
-	Frustum* frustum;
+	
 };
 
