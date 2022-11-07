@@ -24,6 +24,14 @@ bool ModuleRenderExercise::Init()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo); // set vbo active
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vtx_data), vtx_data, GL_STATIC_DRAW);
 	program = App->program->CreateProgram();
+
+	frustum = new Frustum();
+	frustum->SetKind(FrustumSpaceGL, FrustumRightHanded);
+	float aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+	frustum->SetFrame(float3(0,4,8), -float3::unitZ, float3::unitY);
+	frustum->SetViewPlaneDistances(0.1f, 100.0f);
+	frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * 90, aspect);
+
 	return true;
 }
 
@@ -37,16 +45,10 @@ update_status ModuleRenderExercise::Update()
 	float4x4 model, view, proj;
 	model = float4x4::FromTRS(	float3(2.0f, 0.0f, 0.0f),
 								float4x4::RotateZ(pi / 4.0f),
-								float3(2.0f, 1.0f, 0.0f));
-	view = float4x4::LookAt(float3(0.0f, 4.0f, 8.0f), float3::zero, float3::unitY, float3::unitY);
-	proj = GetProj();
+								float3(2.0f, 1.0f, 1.0f));
+	view = frustum->ViewMatrix();
+	proj = frustum->ProjectionMatrix();
 
-	model.Transpose();
-	view.Transpose();
-	proj.Transpose();
-
-	//App->debugdraw->Draw(view, proj, SCREEN_WIDTH, SCREEN_HEIGHT);
-	
 	glUseProgram(program);
 	glUniformMatrix4fv(0, 1, GL_TRUE, &proj[0][0]);
 	glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
@@ -60,6 +62,9 @@ update_status ModuleRenderExercise::Update()
 
 	// 1 triangle to draw = 3 vertices
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	App->debugdraw->Draw(view, proj, SCREEN_WIDTH, SCREEN_HEIGHT);
+
 	return UPDATE_CONTINUE;
 }
 
@@ -72,16 +77,6 @@ bool ModuleRenderExercise::CleanUp()
 {
 	glDeleteProgram(program);
 	glDeleteBuffers(1, &vbo);
+	delete frustum;
 	return true;
-}
-
-float4x4 ModuleRenderExercise::GetProj()
-{
-	Frustum frustum;
-	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-	float aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-	frustum.SetFrame(float3::zero, -float3::unitZ, float3::unitY);
-	frustum.SetViewPlaneDistances(0.1f, 100.0f);
-	frustum.SetVerticalFovAndAspectRatio(math::pi / 4.0f, aspect);
-	return frustum.ProjectionMatrix();
 }

@@ -14,8 +14,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 private:
-	float4x4 GetProj();
 	int program;
 	unsigned vbo;
+	Frustum* frustum;
 };
 

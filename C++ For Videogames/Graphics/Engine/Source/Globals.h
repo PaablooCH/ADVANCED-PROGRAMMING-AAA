@@ -13,6 +13,10 @@ enum update_status
 	UPDATE_ERROR
 };
 
+// Constants -----------
+#define DEGTORAD 0.01745329251f
+#define RADTODEG 1.0f / DEGTORAD
+
 // Configuration -----------
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
