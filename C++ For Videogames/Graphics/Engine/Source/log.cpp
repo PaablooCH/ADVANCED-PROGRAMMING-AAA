@@ -10,7 +10,7 @@ void log(const char file[], int line, const char* format, ...)
 
 	// Construct the string from variable arguments
 	va_start(ap, format);
-	sprintf(tmp_string, format, ap);
+	vsprintf(tmp_string, format, ap);
 	va_end(ap);
 	sprintf(tmp_string2, "\n%s(%d) : %s", file, line, tmp_string);
 	OutputDebugString(tmp_string2);

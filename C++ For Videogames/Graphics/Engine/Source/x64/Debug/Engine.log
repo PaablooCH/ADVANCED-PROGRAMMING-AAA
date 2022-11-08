@@ -1,11 +1,8 @@
 ﻿  Application.cpp
-  Main.cpp
   ModuleCamera.cpp
-  ModuleEditor.cpp
-  ModuleInput.cpp
-  ModuleProgram.cpp
+C:\Users\pabloch2\Documents\GitHub\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\ModuleCamera.cpp(55,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   ModuleRender.cpp
   ModuleRenderExercise.cpp
-  ModuleWindow.cpp
+  log.cpp
   Generating Code...
   Engine.vcxproj -> C:\Users\pabloch2\Documents\GitHub\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\x64\Debug\Engine.exe

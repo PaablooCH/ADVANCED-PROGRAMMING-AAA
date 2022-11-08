@@ -7,8 +7,6 @@
 
 ModuleRender::ModuleRender()
 {
-	
-
 }
 
 // Destructor
@@ -27,8 +25,6 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // we want to have a depth buffer with 24 bits
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); // we want to have a stencil buffer with 8 bits
 	context = SDL_GL_CreateContext(App->window->window);
-
-	
 
 	LOG_ENGINE("Creating Renderer context");
 

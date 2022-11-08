@@ -55,8 +55,6 @@ update_status ModuleRenderExercise::Update()
 	// 1 triangle to draw = 3 vertices
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-	App->debugdraw->Draw(view, proj, SCREEN_WIDTH, SCREEN_HEIGHT);
-
 	return UPDATE_CONTINUE;
 }
 
