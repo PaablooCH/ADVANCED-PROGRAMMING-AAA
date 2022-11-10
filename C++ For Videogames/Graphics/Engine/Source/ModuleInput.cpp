@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "ModuleCamera.h"
 #include "SDL.h"
 #include "imgui_impl_sdl.h"
 
@@ -39,15 +40,22 @@ update_status ModuleInput::Update()
         switch (sdlEvent.type)
         {
             case SDL_WINDOWEVENT:
-                if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
-                    App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
-                if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE)
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    //App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
+                    App->camera->SetAspectRatio(sdlEvent.window.data1, sdlEvent.window.data2);
+                }
+                if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
                     return UPDATE_STOP;
+                }
                 break;
         }
     }
 
     keyboard = SDL_GetKeyboardState(NULL);
+
+    if (keyboard[SDL_SCANCODE_ESCAPE]) {
+        return UPDATE_STOP;
+    }
 
     return UPDATE_CONTINUE;
 }

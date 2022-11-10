@@ -14,12 +14,12 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void SetFOV(int deg);
-	void SetAspectRatio(int w, int h);
-	void SetPlaneDistances(); 
-	void Position(); 
-	void Orientation(); 
-	void LookAt(int x, int y, int z);
+	void SetFOV(const int& deg);
+	void SetAspectRatio(const float& w, const float& h);
+	void SetPlaneDistances(const float& near, const float& far);
+	void Position(const vec& pos);
+	void Orientation(const vec& up);
+	void LookAt(const float& x, const float& y, const float& z);
 	inline float4x4 ProjectionMatrix() {
 		return frustum->ProjectionMatrix();
 	}
@@ -29,7 +29,6 @@ public:
 
 private:
 	Frustum* frustum;
-	float aspect; //TODO temp o long
 
 	float4x4 proj;
 	float4x4 view;

@@ -2,10 +2,8 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleProgram.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleCamera.h"
 #include "GL/glew.h"
-#include "MathGeoLib/Geometry/Frustum.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
 {

@@ -1,7 +1,6 @@
 #include "ModuleCamera.h"
 #include "GL/glew.h"
 #include "ModuleDebugDraw.h"
-#include "ModuleProgram.h"
 #include "Application.h"
 
 ModuleCamera::ModuleCamera()
@@ -12,10 +11,9 @@ bool ModuleCamera::Init()
 {
     frustum = new Frustum();
     frustum->SetKind(FrustumSpaceGL, FrustumRightHanded);
-    aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
     frustum->SetFrame(float3(0, 4, 8), -float3::unitZ, float3::unitY);
     frustum->SetViewPlaneDistances(0.1f, 100.0f);
-    frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * 90, aspect);
+    frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * 90, SCREEN_WIDTH / SCREEN_HEIGHT);
     return true;
 }
 
@@ -45,29 +43,32 @@ bool ModuleCamera::CleanUp()
     return true;
 }
 
-void ModuleCamera::SetFOV(int deg)
+void ModuleCamera::SetFOV(const int& deg)
 {
-    frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * deg, aspect);
+    frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * deg, frustum->AspectRatio());
 }
 
-void ModuleCamera::SetAspectRatio(int w, int h)
+void ModuleCamera::SetAspectRatio(const float& w, const float& h)
 {
-    aspect = w / h;
-    frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov(), aspect);
+    frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov(), w / h);
 }
 
-void ModuleCamera::SetPlaneDistances()
+void ModuleCamera::SetPlaneDistances(const float& near, const float& far)
 {
+    frustum->SetViewPlaneDistances(0.1f, 100.0f);
 }
 
-void ModuleCamera::Position()
+void ModuleCamera::Position(const vec& pos)
 {
+    frustum->SetPos(pos);
 }
 
-void ModuleCamera::Orientation()
+void ModuleCamera::Orientation(const vec& up)
 {
+    frustum->SetUp(up);
 }
 
-void ModuleCamera::LookAt(int x, int y, int z)
+void ModuleCamera::LookAt(const float& x, const float& y, const float& z)
 {
+    frustum->SetFront(vec(x, y, z));
 }

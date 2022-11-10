@@ -1,8 +1,6 @@
-﻿  Application.cpp
-  ModuleCamera.cpp
-C:\Users\pabloch2\Documents\GitHub\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\ModuleCamera.cpp(55,16): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  ModuleRender.cpp
-  ModuleRenderExercise.cpp
-  log.cpp
+﻿  ModuleEditor.cpp
+  ModuleInput.cpp
+E:\Github\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\ModuleInput.cpp(45,87): warning C4244: 'argument': conversion from 'Sint32' to 'const float', possible loss of data
+E:\Github\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\ModuleInput.cpp(45,64): warning C4244: 'argument': conversion from 'Sint32' to 'const float', possible loss of data
   Generating Code...
-  Engine.vcxproj -> C:\Users\pabloch2\Documents\GitHub\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\x64\Debug\Engine.exe
+  Engine.vcxproj -> E:\Github\ADVANCED-PROGRAMMING-AAA\C++ For Videogames\Graphics\Engine\Source\x64\Debug\Engine.exe
