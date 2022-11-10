@@ -36,13 +36,12 @@ update_status ModuleInput::Update()
 
     while (SDL_PollEvent(&sdlEvent) != 0)
     {
-        ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+        //ImGui_ImplSDL2_ProcessEvent(&sdlEvent);  //EDITOR
         switch (sdlEvent.type)
         {
             case SDL_WINDOWEVENT:
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    //App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
-                    App->camera->SetAspectRatio(sdlEvent.window.data1, sdlEvent.window.data2);
+                    App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
                 }
                 if (sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
                     return UPDATE_STOP;

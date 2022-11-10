@@ -90,7 +90,7 @@ update_status ModuleEditor::PostUpdate()
     ImGui::RenderPlatformWindowsDefault();
     SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
 
-    SDL_GL_SwapWindow(App->window->window);
+    //TODO SDL_GL_SwapWindow(App->window->window);
 
     glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
     return UPDATE_CONTINUE;
