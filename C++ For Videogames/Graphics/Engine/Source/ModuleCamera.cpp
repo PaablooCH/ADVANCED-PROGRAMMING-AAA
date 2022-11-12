@@ -45,76 +45,76 @@ bool ModuleCamera::CleanUp()
     return true;
 }
 
-void ModuleCamera::SetFOV(const int& deg)
+void ModuleCamera::SetFOV(const float&& deg)
 {
-    frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * deg, frustum->AspectRatio());
+    frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov() + DEGTORAD * deg, frustum->AspectRatio());
 }
 
-void ModuleCamera::MoveForward()
+void ModuleCamera::MoveForward(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f * multiplier);
 }
 
-void ModuleCamera::MoveBackward()
+void ModuleCamera::MoveBackward(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f * multiplier);
 }
 
-void ModuleCamera::MoveLeft()
+void ModuleCamera::MoveLeft(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f * multiplier);
 }
 
-void ModuleCamera::MoveRight()
+void ModuleCamera::MoveRight(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f * multiplier);
 }
 
-void ModuleCamera::GoUp()
+void ModuleCamera::GoUp(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f * multiplier);
 }
 
-void ModuleCamera::GoDown()
+void ModuleCamera::GoDown(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f * multiplier);
 }
 
 void ModuleCamera::RotationYClockwise()
 {
-    float3x3 rotationMatrix = float3x3::RotateY(DEGTORAD * -1);
+    float3x4 rotationMatrix = frustum->WorldMatrix().RotateY(DEGTORAD * -1);
+    //float3x3 rotationMatrix = float3x3::RotateX(DEGTORAD * -1);
     vec oldFront = frustum->Front().Normalized();
     frustum->SetFront(rotationMatrix.MulDir(oldFront));
     vec oldUp = frustum->Up().Normalized();
     frustum->SetUp(rotationMatrix.MulDir(oldUp));
 }
 
-void ModuleCamera::RotationZClockwise()
+void ModuleCamera::RotationXClockwise()
 {
-    float3x4 rotationMatrix = frustum->WorldMatrix().RotateZ(DEGTORAD * -1);
-    //float3x3 rotationMatrix = float3x3::RotateZ(DEGTORAD * -1);
     vec oldFront = frustum->Front().Normalized();
-    frustum->SetFront(rotationMatrix.MulDir(oldFront));
     vec oldUp = frustum->Up().Normalized();
+    float3x3 rotationMatrix = float3x3::RotateAxisAngle(Cross(oldFront, oldUp), DEGTORAD * 1);
+    frustum->SetFront(rotationMatrix.MulDir(oldFront));
     frustum->SetUp(rotationMatrix.MulDir(oldUp));
 }
 
 void ModuleCamera::RotationYCounterclockwise()
 {
-    float3x3 rotationMatrix = float3x3::RotateY(DEGTORAD * 1);
+    float3x4 rotationMatrix = frustum->WorldMatrix().RotateY(DEGTORAD * 1);
+    //float3x3 rotationMatrix = float3x3::RotateY(DEGTORAD * 1);
     vec oldFront = frustum->Front().Normalized();
     frustum->SetFront(rotationMatrix.MulDir(oldFront));
     vec oldUp = frustum->Up().Normalized();
     frustum->SetUp(rotationMatrix.MulDir(oldUp));
 }
 
-void ModuleCamera::RotationZCounterclockwise()
+void ModuleCamera::RotationXCounterclockwise()
 {
-    float3x4 rotationMatrix = frustum->WorldMatrix().RotateZ(DEGTORAD * 1);
-    //float3x3 rotationMatrix = float3x3::RotateZ(DEGTORAD * 1);
     vec oldFront = frustum->Front().Normalized();
-    frustum->SetFront(rotationMatrix.MulDir(oldFront));
     vec oldUp = frustum->Up().Normalized();
+    float3x3 rotationMatrix = float3x3::RotateAxisAngle(Cross(oldFront, oldUp), DEGTORAD * -1);
+    frustum->SetFront(rotationMatrix.MulDir(oldFront));
     frustum->SetUp(rotationMatrix.MulDir(oldUp));
 }
 

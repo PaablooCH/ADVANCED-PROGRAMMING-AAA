@@ -14,17 +14,17 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void SetFOV(const int& deg);
-	void MoveForward();
-	void MoveBackward();
-	void MoveLeft();
-	void MoveRight();
-	void GoUp();
-	void GoDown();
+	void SetFOV(const float&& deg);
+	void MoveForward(const float&& multiplier);
+	void MoveBackward(const float&& multiplier);
+	void MoveLeft(const float&& multiplier);
+	void MoveRight(const float&& multiplier);
+	void GoUp(const float&& multiplier);
+	void GoDown(const float&& multiplier);
 	void RotationYClockwise();
-	void RotationZClockwise();
+	void RotationXClockwise();
 	void RotationYCounterclockwise();
-	void RotationZCounterclockwise();
+	void RotationXCounterclockwise();
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);
 	void Position(const vec& pos);

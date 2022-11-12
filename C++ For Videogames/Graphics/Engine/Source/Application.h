@@ -36,9 +36,12 @@ public:
 	ModuleDebugDraw* debugdraw = nullptr;
 	ModuleCamera* camera = nullptr;
 
+	float deltaTime;
+
 private:
 
 	std::list<Module*> modules;
+	long lastTime;
 
 };
 
