@@ -82,6 +82,6 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
-	App->camera->SetAspectRatio(width, height);
+	App->camera->SetAspectRatio(float(width), float(height));
 }
 

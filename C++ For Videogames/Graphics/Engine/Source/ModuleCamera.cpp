@@ -2,6 +2,8 @@
 #include "GL/glew.h"
 #include "ModuleDebugDraw.h"
 #include "Application.h"
+#include "MathGeoLib/Math/float3x3.h"
+#include "MathGeoLib/Math/float4x4.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -48,6 +50,74 @@ void ModuleCamera::SetFOV(const int& deg)
     frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * deg, frustum->AspectRatio());
 }
 
+void ModuleCamera::MoveForward()
+{
+    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f);
+}
+
+void ModuleCamera::MoveBackward()
+{
+    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f);
+}
+
+void ModuleCamera::MoveLeft()
+{
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f);
+}
+
+void ModuleCamera::MoveRight()
+{
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f);
+}
+
+void ModuleCamera::GoUp()
+{
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f);
+}
+
+void ModuleCamera::GoDown()
+{
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f);
+}
+
+void ModuleCamera::RotationYClockwise()
+{
+    float3x3 rotationMatrix = float3x3::RotateY(DEGTORAD * -1);
+    vec oldFront = frustum->Front().Normalized();
+    frustum->SetFront(rotationMatrix.MulDir(oldFront));
+    vec oldUp = frustum->Up().Normalized();
+    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+}
+
+void ModuleCamera::RotationZClockwise()
+{
+    float3x4 rotationMatrix = frustum->WorldMatrix().RotateZ(DEGTORAD * -1);
+    //float3x3 rotationMatrix = float3x3::RotateZ(DEGTORAD * -1);
+    vec oldFront = frustum->Front().Normalized();
+    frustum->SetFront(rotationMatrix.MulDir(oldFront));
+    vec oldUp = frustum->Up().Normalized();
+    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+}
+
+void ModuleCamera::RotationYCounterclockwise()
+{
+    float3x3 rotationMatrix = float3x3::RotateY(DEGTORAD * 1);
+    vec oldFront = frustum->Front().Normalized();
+    frustum->SetFront(rotationMatrix.MulDir(oldFront));
+    vec oldUp = frustum->Up().Normalized();
+    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+}
+
+void ModuleCamera::RotationZCounterclockwise()
+{
+    float3x4 rotationMatrix = frustum->WorldMatrix().RotateZ(DEGTORAD * 1);
+    //float3x3 rotationMatrix = float3x3::RotateZ(DEGTORAD * 1);
+    vec oldFront = frustum->Front().Normalized();
+    frustum->SetFront(rotationMatrix.MulDir(oldFront));
+    vec oldUp = frustum->Up().Normalized();
+    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+}
+
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)
 {
     frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov(), w / h);
@@ -60,7 +130,7 @@ void ModuleCamera::SetPlaneDistances(const float& near, const float& far)
 
 void ModuleCamera::Position(const vec& pos)
 {
-    frustum->SetPos(pos);
+    frustum->SetPos(pos); //TODO inservible
 }
 
 void ModuleCamera::Orientation(const vec& up)
