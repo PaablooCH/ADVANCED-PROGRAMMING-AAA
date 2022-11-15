@@ -21,10 +21,10 @@ public:
 	void MoveRight(const float&& multiplier);
 	void GoUp(const float&& multiplier);
 	void GoDown(const float&& multiplier);
-	void RotationYClockwise();
-	void RotationXClockwise();
-	void RotationYCounterclockwise();
-	void RotationXCounterclockwise();
+	void RotationYClockwise(const float&& multiplier);
+	void RotationXClockwise(const float&& multiplier);
+	void RotationYCounterclockwise(const float&& multiplier);
+	void RotationXCounterclockwise(const float&& multiplier);
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);
 	void Position(const vec& pos);

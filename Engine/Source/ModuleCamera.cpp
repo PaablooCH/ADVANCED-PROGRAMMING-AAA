@@ -7,11 +7,11 @@
 
 ModuleCamera::ModuleCamera()
 {
+    frustum = new Frustum();
 }
 
 bool ModuleCamera::Init()
 {
-    frustum = new Frustum();
     frustum->SetKind(FrustumSpaceGL, FrustumRightHanded);
     frustum->SetFrame(float3(0, 2, 8), -float3::unitZ, float3::unitY);
     frustum->SetViewPlaneDistances(0.1f, 100.0f);
@@ -52,70 +52,60 @@ void ModuleCamera::SetFOV(const float&& deg)
 
 void ModuleCamera::MoveForward(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f * multiplier);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f * multiplier * App->deltaTime);
 }
 
 void ModuleCamera::MoveBackward(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f * multiplier);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f * multiplier * App->deltaTime);
 }
 
 void ModuleCamera::MoveLeft(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f * multiplier);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f * multiplier * App->deltaTime);
 }
 
 void ModuleCamera::MoveRight(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f * multiplier);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f * multiplier * App->deltaTime);
 }
 
 void ModuleCamera::GoUp(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f * multiplier);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f * multiplier * App->deltaTime);
 }
 
 void ModuleCamera::GoDown(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f * multiplier);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f * multiplier * App->deltaTime);
 }
 
-void ModuleCamera::RotationYClockwise()
+void ModuleCamera::RotationYClockwise(const float&& multiplier)
 {
-    float3x4 rotationMatrix = frustum->WorldMatrix().RotateY(DEGTORAD * -1);
-    //float3x3 rotationMatrix = float3x3::RotateX(DEGTORAD * -1);
-    vec oldFront = frustum->Front().Normalized();
-    frustum->SetFront(rotationMatrix.MulDir(oldFront));
-    vec oldUp = frustum->Up().Normalized();
-    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * -1 * multiplier * App->deltaTime);
+    frustum->SetFront(giro.MulDir(-float3::unitZ));
+    frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
-void ModuleCamera::RotationXClockwise()
+void ModuleCamera::RotationXClockwise(const float&& multiplier)
 {
-    vec oldFront = frustum->Front().Normalized();
-    vec oldUp = frustum->Up().Normalized();
-    float3x3 rotationMatrix = float3x3::RotateAxisAngle(Cross(oldFront, oldUp), DEGTORAD * 1);
-    frustum->SetFront(rotationMatrix.MulDir(oldFront));
-    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * 1 * multiplier * App->deltaTime);
+    frustum->SetFront(giro.MulDir(-float3::unitZ));
+    frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
-void ModuleCamera::RotationYCounterclockwise()
+void ModuleCamera::RotationYCounterclockwise(const float&& multiplier)
 {
-    float3x4 rotationMatrix = frustum->WorldMatrix().RotateY(DEGTORAD * 1);
-    //float3x3 rotationMatrix = float3x3::RotateY(DEGTORAD * 1);
-    vec oldFront = frustum->Front().Normalized();
-    frustum->SetFront(rotationMatrix.MulDir(oldFront));
-    vec oldUp = frustum->Up().Normalized();
-    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * 1 * multiplier * App->deltaTime);
+    frustum->SetFront(giro.MulDir(-float3::unitZ));
+    frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
-void ModuleCamera::RotationXCounterclockwise()
+void ModuleCamera::RotationXCounterclockwise(const float&& multiplier)
 {
-    vec oldFront = frustum->Front().Normalized();
-    vec oldUp = frustum->Up().Normalized();
-    float3x3 rotationMatrix = float3x3::RotateAxisAngle(Cross(oldFront, oldUp), DEGTORAD * -1);
-    frustum->SetFront(rotationMatrix.MulDir(oldFront));
-    frustum->SetUp(rotationMatrix.MulDir(oldUp));
+    float4x4 giro = frustum->WorldMatrix()* float3x3::RotateX(DEGTORAD * -1 * multiplier * App->deltaTime);
+    frustum->SetFront(giro.MulDir(-float3::unitZ));
+    frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)
