@@ -96,16 +96,16 @@ update_status ModuleInput::Update()
                 }
                 if (sdlEvent.motion.state == SDL_BUTTON_RMASK) { //Mouse Right button
                     if (sdlEvent.motion.xrel > 0) {
-                        App->camera->RotationYClockwise(sdlEvent.motion.xrel);
+                        App->camera->RotationYClockwise(float(sdlEvent.motion.xrel));
                     }
                     else if (sdlEvent.motion.xrel < 0) {
-                        App->camera->RotationYCounterclockwise(-sdlEvent.motion.xrel);
+                        App->camera->RotationYCounterclockwise(float(-sdlEvent.motion.xrel));
                     }
                     if (sdlEvent.motion.yrel > 0) {
-                        App->camera->RotationXCounterclockwise(sdlEvent.motion.yrel);
+                        App->camera->RotationXCounterclockwise(float(sdlEvent.motion.yrel));
                     }
                     else if (sdlEvent.motion.yrel < 0) {
-                        App->camera->RotationXClockwise(-sdlEvent.motion.yrel);
+                        App->camera->RotationXClockwise(float(-sdlEvent.motion.yrel));
                     }
                 }
                 break;
@@ -184,16 +184,16 @@ update_status ModuleInput::Update()
         }
     }
     if (keyboard[SDL_SCANCODE_UP]) {
-        App->camera->RotationXClockwise(1.f);
+        App->camera->RotationXClockwise(10.f);
     }
     if (keyboard[SDL_SCANCODE_DOWN]) {
-        App->camera->RotationXCounterclockwise(1.f);
+        App->camera->RotationXCounterclockwise(10.f);
     }
     if (keyboard[SDL_SCANCODE_LEFT]) {
-        App->camera->RotationYCounterclockwise(1.f);
+        App->camera->RotationYCounterclockwise(10.f);
     }
     if (keyboard[SDL_SCANCODE_RIGHT]) {
-        App->camera->RotationYClockwise(1.f);
+        App->camera->RotationYClockwise(10.f);
     }
 
     return UPDATE_CONTINUE;

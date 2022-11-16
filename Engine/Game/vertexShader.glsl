@@ -1,5 +1,5 @@
 #version 440
-layout(location=0) in vec3 my_vertex_position;
+layout(location = 0) in vec3 my_vertex_position;
 layout(location = 1) in vec2 vertex_uv0;
 
 layout(location = 0) uniform mat4 proj;

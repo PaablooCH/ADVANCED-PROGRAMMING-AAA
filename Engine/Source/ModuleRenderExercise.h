@@ -1,5 +1,7 @@
 #pragma once
 #include "Module.h"
+#include "DirectXTex/DirectXTex.h"
+using namespace DirectX;
 
 class ModuleRenderExercise : public Module
 {
@@ -14,7 +16,7 @@ public:
 	bool CleanUp();
 private:
 	int program;
-	unsigned vbo;
+	unsigned vbo, tbo;
 	
 };
 
