@@ -16,10 +16,10 @@ public:
 	virtual ~ModuleWindow();
 
 	// Called before quitting
-	bool Init();
+	bool Init() override;
 
 	// Called before quitting
-	bool CleanUp();
+	bool CleanUp() override;
 
 public:
 	//The window we'll be rendering to
