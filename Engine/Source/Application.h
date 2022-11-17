@@ -11,7 +11,7 @@ class ModuleInput;
 class ModuleRenderExercise;
 class ModuleProgram;
 class ModuleRenderExercise;
-//class ModuleEditor; //EDITOR
+class ModuleEditor;
 class ModuleDebugDraw;
 class ModuleCamera;
 class ModuleTexture;
@@ -33,7 +33,7 @@ public:
 	ModuleInput* input = nullptr;
 	ModuleProgram* program = nullptr;
 	ModuleRenderExercise* exercise = nullptr;
-	//ModuleEditor* editor = nullptr; //EDITOR
+	ModuleEditor* editor = nullptr;
 	ModuleDebugDraw* debugdraw = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleTexture* texture = nullptr;
