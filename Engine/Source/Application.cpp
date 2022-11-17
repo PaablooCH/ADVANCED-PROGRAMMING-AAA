@@ -17,6 +17,7 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window = new ModuleWindow());
+	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(input = new ModuleInput());
@@ -24,7 +25,6 @@ Application::Application()
 	modules.push_back(texture = new ModuleTexture());
 	modules.push_back(exercise = new ModuleRenderExercise());
 	modules.push_back(debugdraw = new ModuleDebugDraw());
-	modules.push_back(editor = new ModuleEditor());
 
 	lastTime = Clock::Time();
 	deltaTime = 0.f;
@@ -44,6 +44,9 @@ bool Application::Init()
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
+
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+		ret = (*it)->Start();
 
 	return ret;
 }
