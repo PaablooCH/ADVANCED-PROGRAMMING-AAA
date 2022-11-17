@@ -16,7 +16,7 @@ public:
 	bool CleanUp();
 private:
 	int program;
-	unsigned vbo, tbo;
+	unsigned vbo, tbo, ebo, vao;
 	
 };
 
