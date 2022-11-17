@@ -9,6 +9,10 @@
 ModuleRenderExercise::ModuleRenderExercise()
 {
 	program = 0;
+	vbo = 0;
+	vao = 0;
+	tbo = 0;
+	ebo = 0;
 }
 
 ModuleRenderExercise::~ModuleRenderExercise()
@@ -90,7 +94,6 @@ bool ModuleRenderExercise::Init()
 	}
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, metadata.width, metadata.height, 0, format, type, image->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
-
 	return true;
 }
 
