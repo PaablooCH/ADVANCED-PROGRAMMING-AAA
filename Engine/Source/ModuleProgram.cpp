@@ -1,6 +1,7 @@
 #include "ModuleProgram.h"
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleEditor.h"
 #include "GL/glew.h"
 #include <stdio.h>
 

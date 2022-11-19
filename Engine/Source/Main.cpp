@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
 #include "Globals.h"
 
 #include "SDL.h"
@@ -29,23 +30,27 @@ int main(int argc, char ** argv)
 		{
 		case MAIN_CREATION:
 
-			LOG_ENGINE("Application Creation --------------");
+			//LOG_ENGINE("Application Creation --------------");
 			App = new Application();
+			App->editor->logs.emplace_back("Application Creation --------------");
 			state = MAIN_START;
 			break;
 
 		case MAIN_START:
 
-			LOG_ENGINE("Application Init --------------");
+			//LOG_ENGINE("Application Init --------------");
+			App->editor->logs.emplace_back("Application Init --------------");
 			if (App->Init() == false)
 			{
-				LOG_ENGINE("Application Init exits with error -----");
+				//LOG_ENGINE("Application Init exits with error -----");
+				App->editor->logs.emplace_back("Application Init exits with error -----");
 				state = MAIN_EXIT;
 			}
 			else
 			{
 				state = MAIN_UPDATE;
-				LOG_ENGINE("Application Update --------------");
+				//LOG_ENGINE("Application Update --------------");
+				App->editor->logs.emplace_back("Application Update --------------");
 			}
 
 			break;
@@ -56,7 +61,8 @@ int main(int argc, char ** argv)
 
 			if (update_return == UPDATE_ERROR)
 			{
-				LOG_ENGINE("Application Update exits with error -----");
+				//LOG_ENGINE("Application Update exits with error -----");
+				App->editor->logs.emplace_back("Application Update exits with error -----");
 				state = MAIN_EXIT;
 			}
 
@@ -67,10 +73,12 @@ int main(int argc, char ** argv)
 
 		case MAIN_FINISH:
 
-			LOG_ENGINE("Application CleanUp --------------");
+			//LOG_ENGINE("Application CleanUp --------------");
+			App->editor->logs.emplace_back("Application CleanUp --------------");
 			if (App->CleanUp() == false)
 			{
-				LOG_ENGINE("Application CleanUp exits with error -----");
+				//LOG_ENGINE("Application CleanUp exits with error -----");
+				App->editor->logs.emplace_back("Application CleanUp exits with error -----");
 			}
 			else
 				main_return = EXIT_SUCCESS;
@@ -82,8 +90,8 @@ int main(int argc, char ** argv)
 		}
 
 	}
-
+	//LOG_ENGINE("Bye :)\n");
+	App->editor->logs.emplace_back("Bye :)\n");
 	delete App;
-	LOG_ENGINE("Bye :)\n");
 	return main_return;
 }

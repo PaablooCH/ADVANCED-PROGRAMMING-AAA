@@ -184,6 +184,9 @@
     <ClCompile Include="ModuleTexture.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTimer.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -481,6 +484,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTexture.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTimer.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

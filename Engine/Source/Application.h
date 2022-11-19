@@ -15,6 +15,7 @@ class ModuleEditor;
 class ModuleDebugDraw;
 class ModuleCamera;
 class ModuleTexture;
+class ModuleTimer;
 
 class Application
 {
@@ -37,14 +38,10 @@ public:
 	ModuleDebugDraw* debugdraw = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleTexture* texture = nullptr;
-
-	float deltaTime;
+	ModuleTimer* timer = nullptr;
 
 private:
-
 	std::list<Module*> modules;
-	long lastTime;
-
 };
 
 extern Application* App;

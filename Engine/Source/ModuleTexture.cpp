@@ -1,4 +1,6 @@
 #include "ModuleTexture.h"
+#include "Application.h"
+#include "ModuleEditor.h"
 
 void ModuleTexture::LoadTexture(const wchar_t* nameTexture, TexMetadata* metadata, ScratchImage& image)
 {
@@ -9,4 +11,5 @@ void ModuleTexture::LoadTexture(const wchar_t* nameTexture, TexMetadata* metadat
             LoadFromWICFile(nameTexture, WIC_FLAGS_NONE, metadata, image);
         }
     }
+    App->editor->logs.emplace_back("Texture loaded");
 }

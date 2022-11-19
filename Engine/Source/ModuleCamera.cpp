@@ -1,6 +1,8 @@
 #include "ModuleCamera.h"
 #include "GL/glew.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleEditor.h"
+#include "ModuleTimer.h"
 #include "Application.h"
 #include "MathGeoLib/Math/float3x3.h"
 #include "MathGeoLib/Math/float4x4.h"
@@ -52,64 +54,65 @@ void ModuleCamera::SetFOV(const float&& deg)
 
 void ModuleCamera::MoveForward(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f * multiplier * App->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f * multiplier * App->timer->deltaTime);
 }
 
 void ModuleCamera::MoveBackward(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f * multiplier * App->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f * multiplier * App->timer->deltaTime);
 }
 
 void ModuleCamera::MoveLeft(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f * multiplier * App->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f * multiplier * App->timer->deltaTime);
 }
 
 void ModuleCamera::MoveRight(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f * multiplier * App->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f * multiplier * App->timer->deltaTime);
 }
 
 void ModuleCamera::GoUp(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f * multiplier * App->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f * multiplier * App->timer->deltaTime);
 }
 
 void ModuleCamera::GoDown(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f * multiplier * App->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f * multiplier * App->timer->deltaTime);
 }
 
 void ModuleCamera::RotationYClockwise(const float&& multiplier)
 {
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * -1 * multiplier * App->deltaTime);
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * -1 * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
 void ModuleCamera::RotationXClockwise(const float&& multiplier)
 {
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * 1 * multiplier * App->deltaTime);
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * 1 * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
 void ModuleCamera::RotationYCounterclockwise(const float&& multiplier)
 {
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * 1 * multiplier * App->deltaTime);
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * 1 * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
 void ModuleCamera::RotationXCounterclockwise(const float&& multiplier)
 {
-    float4x4 giro = frustum->WorldMatrix()* float3x3::RotateX(DEGTORAD * -1 * multiplier * App->deltaTime);
+    float4x4 giro = frustum->WorldMatrix()* float3x3::RotateX(DEGTORAD * -1 * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)
 {
+    App->editor->logs.emplace_back("Aspect Ratio changed");
     frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov(), w / h);
 }
 

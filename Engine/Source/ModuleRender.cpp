@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleEditor.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -26,7 +27,8 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); // we want to have a stencil buffer with 8 bits
 	context = SDL_GL_CreateContext(App->window->window);
 
-	LOG_ENGINE("Creating Renderer context");
+	//LOG_ENGINE("Creating Renderer context");
+	App->editor->logs.emplace_back("Creating Renderer context");
 
 	GLenum err = glewInit();
 	LOG_ENGINE("Using Glew %s", glewGetString(GLEW_VERSION));
@@ -71,7 +73,8 @@ update_status ModuleRender::PostUpdate()
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	LOG_ENGINE("Destroying renderer");
+	//LOG_ENGINE("Destroying renderer");
+	App->editor->logs.emplace_back("Destroying renderer");
 
 	SDL_GL_DeleteContext(context);
 

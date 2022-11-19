@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleEditor.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -15,6 +16,7 @@ ModuleWindow::~ModuleWindow()
 bool ModuleWindow::Init()
 {
 	LOG_ENGINE("Init SDL window & surface");
+	App->editor->logs.emplace_back("Init SDL window & surface");
 	bool ret = true;
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -59,7 +61,6 @@ bool ModuleWindow::Init()
 		else
 		{
 			//Get window surface
-			
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
@@ -70,7 +71,8 @@ bool ModuleWindow::Init()
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
-	LOG_ENGINE("Destroying SDL window and quitting all SDL systems");
+	//LOG_ENGINE("Destroying SDL window and quitting all SDL systems");
+	App->editor->logs.emplace_back("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
 	if(window != NULL)

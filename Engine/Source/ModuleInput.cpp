@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
+#include "ModuleEditor.h"
 #include "SDL.h"
 #include "imgui_impl_sdl.h"
 
@@ -16,14 +17,15 @@ ModuleInput::~ModuleInput()
 // Called before render is available
 bool ModuleInput::Init()
 {
-	LOG_ENGINE("Init SDL input event system");
+	//LOG_ENGINE("Init SDL input event system");
+    App->editor->logs.emplace_back("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		LOG_ENGINE("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
-		ret = false;
+        ret = false;
 	}
 
 	return ret;
@@ -63,34 +65,34 @@ update_status ModuleInput::Update()
                 if (sdlEvent.motion.state == SDL_BUTTON_MMASK) { //Mouse Middle button
                     if (sdlEvent.motion.xrel < 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->MoveRight(2.f);
+                            App->camera->MoveRight(10.f);
                         }
                         else {
-                            App->camera->MoveRight(1.f);
+                            App->camera->MoveRight(5.f);
                         }
                     }
                     if (sdlEvent.motion.xrel > 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->MoveLeft(2.f);
+                            App->camera->MoveLeft(10.f);
                         }
                         else {
-                            App->camera->MoveLeft(1.f);
+                            App->camera->MoveLeft(5.f);
                         }
                     }
                     if (sdlEvent.motion.yrel > 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->GoDown(2.f);
+                            App->camera->GoDown(10.f);
                         }
                         else {
-                            App->camera->GoDown(1.f);
+                            App->camera->GoDown(5.f);
                         }
                     }
                     if (sdlEvent.motion.yrel < 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->GoUp(2.f);
+                            App->camera->GoUp(10.f);
                         }
                         else {
-                            App->camera->GoUp(1.f);
+                            App->camera->GoUp(5.f);
                         }
                     }
                 }
@@ -113,19 +115,19 @@ update_status ModuleInput::Update()
                 if (sdlEvent.wheel.y > 0) // scroll up
                 {
                     if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                        App->camera->MoveForward(10.f);
+                        App->camera->MoveForward(20.f);
                     }
                     else {
-                        App->camera->MoveForward(5.f);
+                        App->camera->MoveForward(10.f);
                     }
                 }
                 else if (sdlEvent.wheel.y < 0) // scroll down
                 {
                     if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                        App->camera->MoveBackward(10.f);
+                        App->camera->MoveBackward(20.f);
                     }
                     else {
-                        App->camera->MoveBackward(5.f);
+                        App->camera->MoveBackward(10.f);
                     }
                 }
                 break;
@@ -137,63 +139,63 @@ update_status ModuleInput::Update()
     }
     if (keyboard[SDL_SCANCODE_W]) { //MoveForward
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveForward(2.f);
+            App->camera->MoveForward(10.f);
         }
         else {
-            App->camera->MoveForward(1.f);
+            App->camera->MoveForward(5.f);
         }
     }
     if (keyboard[SDL_SCANCODE_S]) { //MoveBackward
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveBackward(2.f);
+            App->camera->MoveBackward(10.f);
         }
         else {
-            App->camera->MoveBackward(1.f);
+            App->camera->MoveBackward(5.f);
         }
     }
     if (keyboard[SDL_SCANCODE_A]) { //MoveLeft
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveLeft(2.f);
+            App->camera->MoveLeft(10.f);
         }
         else {
-            App->camera->MoveLeft(1.f);
+            App->camera->MoveLeft(5.f);
         }
     }
     if (keyboard[SDL_SCANCODE_D]) { //MoveRight
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveRight(2.f);
+            App->camera->MoveRight(10.f);
         }
         else {
-            App->camera->MoveRight(1.f);
+            App->camera->MoveRight(5.f);
         }
     }
     if (keyboard[SDL_SCANCODE_Q]) { //GoUp
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->GoUp(2.f);
+            App->camera->GoUp(10.f);
         }
         else {
-            App->camera->GoUp(1.f);
+            App->camera->GoUp(5.f);
         }
     }
     if (keyboard[SDL_SCANCODE_E]) { // GoDown
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->GoDown(2.f);
+            App->camera->GoDown(10.f);
         }
         else {
-            App->camera->GoDown(1.f);
+            App->camera->GoDown(5.f);
         }
     }
     if (keyboard[SDL_SCANCODE_UP]) {
-        App->camera->RotationXClockwise(10.f);
+        App->camera->RotationXClockwise(20.f);
     }
     if (keyboard[SDL_SCANCODE_DOWN]) {
-        App->camera->RotationXCounterclockwise(10.f);
+        App->camera->RotationXCounterclockwise(20.f);
     }
     if (keyboard[SDL_SCANCODE_LEFT]) {
-        App->camera->RotationYCounterclockwise(10.f);
+        App->camera->RotationYCounterclockwise(20.f);
     }
     if (keyboard[SDL_SCANCODE_RIGHT]) {
-        App->camera->RotationYClockwise(10.f);
+        App->camera->RotationYClockwise(20.f);
     }
 
     return UPDATE_CONTINUE;
@@ -202,7 +204,8 @@ update_status ModuleInput::Update()
 // Called before quitting
 bool ModuleInput::CleanUp()
 {
-	LOG_ENGINE("Quitting SDL input event subsystem");
-	SDL_QuitSubSystem(SDL_INIT_EVENTS);
+	//LOG_ENGINE("Quitting SDL input event subsystem");
+    App->editor->logs.emplace_back("Quitting SDL input event subsystem");
+    SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
 }

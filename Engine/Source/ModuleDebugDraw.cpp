@@ -1,5 +1,7 @@
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleEditor.h"
+#include "Application.h"
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
@@ -592,6 +594,7 @@ bool ModuleDebugDraw::Init()
 {
     implementation = new DDRenderInterfaceCoreGL;
     dd::initialize(implementation);
+    App->editor->logs.emplace_back("Init Grid");
     return true;
 }
 
