@@ -27,8 +27,12 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
+		width = SCREEN_WIDTH;
+		height = SCREEN_HEIGHT;
+		SDL_DisplayMode dm;
+		SDL_GetCurrentDisplayMode(0, &dm);
+		maxWidht = dm.w;
+		maxHeight = dm.h;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if(FULLSCREEN == true)
@@ -85,3 +89,39 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+void ModuleWindow::SetFullScreen(bool fullScreen)
+{
+	fullScreen ? SDL_SetWindowFullscreen(window, SDL_TRUE) : SDL_SetWindowFullscreen(window, SDL_FALSE);
+}
+
+void ModuleWindow::SetBorderless(bool borderless)
+{
+	borderless ? SDL_SetWindowBordered(window, SDL_FALSE) : SDL_SetWindowBordered(window, SDL_TRUE);
+}
+
+void ModuleWindow::SetResizable(bool resizable)
+{
+	resizable ? SDL_SetWindowResizable(window, SDL_TRUE) : SDL_SetWindowResizable(window, SDL_FALSE);
+}
+
+void ModuleWindow::SetBrightness(float brightness)
+{
+	SDL_SetWindowBrightness(window, brightness);
+}
+
+void ModuleWindow::SetWidht(int w)
+{
+	width = w;
+	SDL_SetWindowSize(window, width, height);
+}
+
+void ModuleWindow::SetHeight(int h)
+{
+	height = h;
+	SDL_SetWindowSize(window, width, height);
+}
+
+float ModuleWindow::GetBrightness()
+{
+	return SDL_GetWindowBrightness(window);
+}

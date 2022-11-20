@@ -27,5 +27,5 @@ enum update_status
 #define RESIZABLE true
 #define FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "Super Awesome Engine"
+#define TITLE "Pablo's Engine"
 #define GLSL_VERSION "#version 440"
