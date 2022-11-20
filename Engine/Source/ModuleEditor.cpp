@@ -69,7 +69,7 @@ update_status ModuleEditor::Update()
     DrawLog("Console", openConsole);
     DrawConfig("Configuration", openConfig);
     DrawAbout("About", openAbout);
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow(); //TODO eliminarlo al final
     return UPDATE_CONTINUE;
 }
 
@@ -82,8 +82,6 @@ update_status ModuleEditor::PostUpdate()
     ImGui::UpdatePlatformWindows();
     ImGui::RenderPlatformWindowsDefault();
     SDL_GL_MakeCurrent(App->window->window, App->renderer->context);
-
-    //SDL_GL_SwapWindow(App->window->window);
 
     return UPDATE_CONTINUE;
 }
