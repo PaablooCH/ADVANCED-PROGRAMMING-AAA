@@ -27,5 +27,5 @@ enum update_status
 #define RESIZABLE true
 #define FULLSCREEN_DESKTOP false
 #define VSYNC true
-#define TITLE "Pablo's Engine"
+#define TITLE "Deus Ex Machina"
 #define GLSL_VERSION "#version 440"

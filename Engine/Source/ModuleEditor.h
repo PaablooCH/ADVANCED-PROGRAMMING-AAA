@@ -24,6 +24,7 @@ public:
 private:
 	void DrawLog(const char* title, bool& p_open);
 	void DrawConfig(const char* title, bool& p_open);
+	void DrawAbout(const char* title, bool& p_open);
 	inline void ClearLog() {
 		logs.clear();
 	}

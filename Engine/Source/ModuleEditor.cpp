@@ -1,4 +1,4 @@
-#include "ModuleEditor.h"
+﻿#include "ModuleEditor.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
@@ -68,6 +68,7 @@ update_status ModuleEditor::Update()
 
     DrawLog("Console", openConsole);
     DrawConfig("Configuration", openConfig);
+    DrawAbout("About", openAbout);
     ImGui::ShowDemoWindow();
     return UPDATE_CONTINUE;
 }
@@ -245,7 +246,7 @@ void ModuleEditor::DrawConfig(const char* title, bool& p_open)
         }
 
 
-        if (ImGui::Checkbox("FULLSCREEN     ", &winFullscreen))
+        if (ImGui::Checkbox("FULLSCREEN   |  ", &winFullscreen))
         {
             App->window->SetFullScreen(winFullscreen);
 
@@ -256,7 +257,7 @@ void ModuleEditor::DrawConfig(const char* title, bool& p_open)
             App->window->SetResizable(winResizable);
         }
 
-        if (ImGui::Checkbox("BORDERLESS     ", &winBorderless))
+        if (ImGui::Checkbox("BORDERLESS   |  ", &winBorderless))
         {
             App->window->SetBorderless(winBorderless);
         }
@@ -331,8 +332,51 @@ void ModuleEditor::DrawConfig(const char* title, bool& p_open)
         SDL_GetCurrentVideoDriver();
         ImGui::Text("GPU:");
         ImGui::SameLine();
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", SDL_GetCurrentVideoDriver());
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", SDL_GetCurrentVideoDriver()); //TODO falta la gpu
     }
+
+    ImGui::SetItemDefaultFocus();
+    ImGui::End();
+}
+
+void ModuleEditor::DrawAbout(const char* title, bool& p_open)
+{
+    ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_Always);
+    if (!ImGui::Begin(title, &p_open))
+    {
+        ImGui::End();
+        return;
+    }
+
+    
+    ImGui::Text("Engine Name:");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Deus Ex Machina");
+    
+    ImGui::Text("Description:");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "With <3 by Pablo Cebollada Hernandez.");
+    
+    ImGui::Text("Author:");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Pablo Cebollada Hernandez");
+    
+    ImGui::Text("Libraries:");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "glew 2.1.0,");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SDL2,");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "DirectXTex October 2022 version,");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MathGeoLib &");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui.");
+
+    ImGui::Text("License:");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MIT License.");
+
+    
 
     ImGui::SetItemDefaultFocus();
     ImGui::End();
