@@ -20,8 +20,8 @@ enum update_status
 #define LOW_LIMIT 0.1f            // Keep At/Above 10fps
 
 // Configuration -----------
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1800
+#define SCREEN_HEIGHT 1000
 #define FULLSCREEN false
 #define BORDERLESS false
 #define RESIZABLE true
