@@ -1,5 +1,4 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 #include "Globals.h"
 
 void log(const char file[], int line, const char* format, ...)

@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief A 3D (x,y,z) ordered tuple. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathBuildConfig.h"
 

@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief The Frustum geometry object. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float2.h"

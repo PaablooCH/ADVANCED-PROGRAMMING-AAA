@@ -5,7 +5,6 @@
 	by Florian Loitsch, available at
 	http://www.cs.tufts.edu/~nr/cs257/archive/florian-loitsch/printf.pdf */
 
-#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdint.h> // uint64_t etc.
 #include <assert.h> // assert

@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief 2D Axis-Aligned Bounding Box structure. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
 

@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief A double-precision 4-wide vector. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathBuildConfig.h"
 

@@ -188,7 +188,7 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -493,7 +493,7 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Utils</Filter>
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -514,6 +514,9 @@
     </Filter>
     <Filter Include="MathGeoLib">
       <UniqueIdentifier>{68ab069b-a2d5-4838-8e10-d96158e5edd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{474fedd3-caf1-491c-88ba-a159cff0c123}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

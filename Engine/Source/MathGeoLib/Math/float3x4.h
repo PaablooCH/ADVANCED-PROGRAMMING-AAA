@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief A 3-by-4 matrix for affine operations in 3D space. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include "myassert.h"

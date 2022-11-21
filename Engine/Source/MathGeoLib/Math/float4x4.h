@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief A 4-by-4 matrix for affine and perspective projection operations in 3D space. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathBuildConfig.h"
 #include "SSEMath.h"

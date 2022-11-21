@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief A 4D (x,y,z,w) homogeneous vector. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathBuildConfig.h"
 

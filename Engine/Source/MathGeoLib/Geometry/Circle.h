@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief The Circle geometry object. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"

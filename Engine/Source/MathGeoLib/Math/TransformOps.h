@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathGeoLibFwd.h"
 #include "float3.h"

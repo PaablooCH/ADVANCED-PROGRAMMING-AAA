@@ -16,7 +16,6 @@
 	@author Jukka Jylänki
 	@brief A 2D (x,y) ordered pair. */
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "../MathBuildConfig.h"
 
