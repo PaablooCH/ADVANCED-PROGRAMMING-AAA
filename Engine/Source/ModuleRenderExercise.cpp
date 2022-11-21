@@ -21,6 +21,11 @@ ModuleRenderExercise::~ModuleRenderExercise()
 
 bool ModuleRenderExercise::Init()
 {
+	return true;
+}
+
+bool ModuleRenderExercise::Start()
+{
 	program = App->program->CreateProgram();
 	float vtx_data[] = {	 // positions         // texture coords
 							 0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
@@ -54,7 +59,7 @@ bool ModuleRenderExercise::Init()
 	// texture coord attribute
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	
+
 	// load & create texture
 	Info info;
 	App->texture->LoadTexture("Baboon.png", info);
