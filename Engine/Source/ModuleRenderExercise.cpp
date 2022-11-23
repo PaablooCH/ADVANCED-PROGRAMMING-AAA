@@ -61,7 +61,7 @@ bool ModuleRenderExercise::Start()
 	glEnableVertexAttribArray(1);
 
 	// load & create texture
-	Info info;
+	InfoTexture info;
 	App->texture->LoadTexture("Baboon.png", info);
 	tbo = info.id;
 	return true;

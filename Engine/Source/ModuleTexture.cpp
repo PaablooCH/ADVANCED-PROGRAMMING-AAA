@@ -3,7 +3,7 @@
 #include "ModuleEditor.h"
 
 
-void ModuleTexture::LoadTexture(const char* nameTexture, Info& info)
+void ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
 {
 	ScratchImage scratchImage;
 	const size_t cSize = strlen(nameTexture) + 1;

@@ -6,7 +6,7 @@
 
 using namespace DirectX;
 
-struct Info
+struct InfoTexture
 {
 	GLint id;
 	std::string path;
@@ -15,6 +15,6 @@ struct Info
 class ModuleTexture : public Module
 {
 public:
-	void LoadTexture(const char* nameTexture, Info& info);
+	void LoadTexture(const char* nameTexture, InfoTexture& info);
 };
 
