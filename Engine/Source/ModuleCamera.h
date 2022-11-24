@@ -34,7 +34,7 @@ public:
 
 private:
 	Frustum* frustum;
-	int speed;
+	float speed;
 
 	float4x4 proj;
 	float4x4 view;
