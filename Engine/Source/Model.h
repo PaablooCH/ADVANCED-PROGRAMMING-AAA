@@ -4,17 +4,19 @@
 #include "Mesh.h"
 #include "ModuleTexture.h"
 
+class aiMaterial;
+
 class Model
 {
 public:
-	void Load(const char* fileName);
+	Model(const char* fileName);
+	~Model();
+	void Draw();
 
 private:
 	void LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials);
-	void LoadMeshes(aiMesh** _meshes, const unsigned int& _numMeshes);
+	void LoadMeshes(aiMesh** meshes, const unsigned int& numMeshes);
 	std::vector<InfoTexture> materials;
-	std::vector<InfoVBO> vbos;
-	std::vector<InfoEBO> ebos;
-
+	std::vector<Mesh*> meshes;
 };
 

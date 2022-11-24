@@ -1,9 +1,44 @@
 #include "Mesh.h"
+#include "Application.h"
+#include "ModuleProgram.h"
+#include "ModuleCamera.h"
 #include "MathGeoLib/Math/float2.h"
 
-void Mesh::LoadVBO(const aiMesh* mesh, InfoVBO& info)
+Mesh::Mesh(const aiMesh* mesh)
 {
-	GLuint vbo;
+	LoadVBO(mesh);
+	LoadEBO(mesh);
+	materialIindex = mesh->mMaterialIndex;
+	CreateVAO();
+}
+
+Mesh::~Mesh()
+{
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ebo);
+	glDeleteVertexArrays(1, &vao);
+}
+
+void Mesh::Draw(const std::vector<InfoTexture>& modelTextures)
+{
+	unsigned program = App->program->CreateProgram();
+	const float4x4& view = App->camera->GetViewMatrix();
+	const float4x4& proj = App->camera->ProjectionMatrix();
+	float4x4 model = float4x4::identity;
+	glUseProgram(program);
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, modelTextures[materialIindex].id);
+	glUniform1i(glGetUniformLocation(program, "mytexture"), 0);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);
+}
+
+void Mesh::LoadVBO(const aiMesh* mesh)
+{
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	unsigned vertex_size = (sizeof(float) * 3 + sizeof(float) * 2);
@@ -19,13 +54,11 @@ void Mesh::LoadVBO(const aiMesh* mesh, InfoVBO& info)
 		uvs[i] = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 	}
 	glUnmapBuffer(GL_ARRAY_BUFFER);
-	info.vbo = vbo;
-	info.numVertices = mesh->mNumVertices;
+	numVertices = mesh->mNumVertices;
 }
 
-void Mesh::LoadEBO(const aiMesh* mesh, InfoEBO& info)
+void Mesh::LoadEBO(const aiMesh* mesh)
 {
-	GLuint ebo;
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	unsigned index_size = sizeof(unsigned) * mesh->mNumFaces * 3;
@@ -39,6 +72,17 @@ void Mesh::LoadEBO(const aiMesh* mesh, InfoEBO& info)
 		*(indices++) = mesh->mFaces[i].mIndices[2];
 	}
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-	info.ebo = ebo;
-	info.numIndices = mesh->mNumFaces * 3;
+	numIndices = mesh->mNumFaces * 3;
+}
+
+void Mesh::CreateVAO()
+{
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * numVertices));
 }

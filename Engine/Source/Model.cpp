@@ -8,7 +8,7 @@
 #include "ModuleEditor.h"
 #include "Globals.h"
 
-void Model::Load(const char* fileName)
+Model::Model(const char* fileName)
 {
 	const aiScene* scene = aiImportFile(fileName, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (scene)
@@ -19,6 +19,24 @@ void Model::Load(const char* fileName)
 	else
 	{
 		LOG_ENGINE("Error loading %s: %s", fileName, aiGetErrorString());
+	}
+}
+
+Model::~Model()
+{
+	for (int i = 0; i < materials.size(); i++) {
+		glDeleteTextures(1, &materials[i].id);
+	}
+
+	for (int i = 0; i < meshes.size(); i++) {
+		delete meshes[i];
+	}
+}
+
+void Model::Draw()
+{
+	for (int i = 0; i < meshes.size(); i++) {
+		meshes[i]->Draw(materials);
 	}
 }
 
@@ -43,18 +61,12 @@ void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMateri
 void Model::LoadMeshes(aiMesh** aiMesh, const unsigned int& numMeshes)
 {
 	App->editor->logs.emplace_back("Assimp: Loading the meshes");
-	vbos = std::vector<InfoVBO>(numMeshes);
-	ebos = std::vector<InfoEBO>(numMeshes);
+	meshes = std::vector<Mesh*>(numMeshes);
 	App->editor->logs.emplace_back("Loading meshes.");
 
 	for (unsigned int i = 0; i < numMeshes; ++i)
 	{
 		LOG_ENGINE("Assimp: Loading the mesh %i", i);
-		InfoVBO infoVBO;
-		Mesh::LoadVBO(aiMesh[i], infoVBO);
-		vbos[i] = infoVBO;
-		InfoEBO infoEBO;
-		Mesh::LoadEBO(aiMesh[i], infoEBO);
-		ebos[i] = infoEBO;
+		meshes[i] = new Mesh(aiMesh[i]);
 	}
 }

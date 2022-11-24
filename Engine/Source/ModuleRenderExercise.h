@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "Model.h"
 #include "DirectXTex/DirectXTex.h"
 using namespace DirectX;
 
@@ -16,8 +17,7 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 private:
-	int program;
-	unsigned vbo, tbo, ebo, vao;
+	Model* model;
 	
 };
 

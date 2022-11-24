@@ -84,28 +84,28 @@ void ModuleCamera::GoDown(const float&& multiplier)
 
 void ModuleCamera::RotationYClockwise(const float&& multiplier)
 {
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * -1 * multiplier * App->timer->deltaTime);
+    float4x4 giro = float3x3::RotateY(DEGTORAD * -10 * multiplier * App->timer->deltaTime) * frustum->WorldMatrix();
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
-void ModuleCamera::RotationXClockwise(const float&& multiplier)
+void ModuleCamera::RotationXClockwise(const float&& multiplier) //TODO multiplier +/-
 {
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * 1 * multiplier * App->timer->deltaTime);
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * 10 * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
 void ModuleCamera::RotationYCounterclockwise(const float&& multiplier)
 {
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateY(DEGTORAD * 1 * multiplier * App->timer->deltaTime);
+    float4x4 giro = float3x3::RotateY(DEGTORAD * 10 * multiplier * App->timer->deltaTime) * frustum->WorldMatrix();
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
 void ModuleCamera::RotationXCounterclockwise(const float&& multiplier)
 {
-    float4x4 giro = frustum->WorldMatrix()* float3x3::RotateX(DEGTORAD * -1 * multiplier * App->timer->deltaTime);
+    float4x4 giro = frustum->WorldMatrix()* float3x3::RotateX(DEGTORAD * -10 * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }

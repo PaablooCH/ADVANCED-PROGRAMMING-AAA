@@ -1,23 +1,25 @@
 #pragma once
 #include <assimp/mesh.h>
+#include "ModuleTexture.h"
 #include "GL/glew.h"
-
-struct InfoVBO
-{
-	GLint vbo;
-	int numVertices;
-};
-
-struct InfoEBO
-{
-	GLint ebo;
-	int numIndices;
-};
 
 class Mesh
 {
 public:
-	void static LoadVBO(const aiMesh* mesh, InfoVBO& info);
-	void static LoadEBO(const aiMesh* mesh, InfoEBO& info);
+	Mesh(const aiMesh* mesh);
+	~Mesh();
+	void Draw(const std::vector<InfoTexture>& model_textures);
+	
+private:
+	void LoadVBO(const aiMesh* mesh);
+	void LoadEBO(const aiMesh* mesh);
+	void CreateVAO();
+
+	GLuint vbo;
+	GLuint ebo;
+	GLuint vao;
+	int numVertices;
+	int numIndices;
+	int materialIindex;
 };
 

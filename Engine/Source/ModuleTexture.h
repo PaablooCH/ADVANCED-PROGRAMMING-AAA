@@ -8,7 +8,7 @@ using namespace DirectX;
 
 struct InfoTexture
 {
-	GLint id;
+	GLuint id;
 	std::string path;
 };
 
