@@ -15,16 +15,11 @@ public:
 	bool CleanUp() override;
 
 	void SetFOV(const float&& deg);
-	void MoveForward(const float&& multiplier);
-	void MoveBackward(const float&& multiplier);
-	void MoveLeft(const float&& multiplier);
-	void MoveRight(const float&& multiplier);
-	void GoUp(const float&& multiplier);
-	void GoDown(const float&& multiplier);
-	void RotationYClockwise(const float&& multiplier);
-	void RotationXClockwise(const float&& multiplier);
-	void RotationYCounterclockwise(const float&& multiplier);
-	void RotationXCounterclockwise(const float&& multiplier);
+	void MoveFrontBack(const float&& multiplier);
+	void MoveLeftRight(const float&& multiplier);
+	void GoUpDown(const float&& multiplier);
+	void RotationY(const float&& multiplier);
+	void RotationX(const float&& multiplier);
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);
 	void Position(const vec& pos);
@@ -39,6 +34,7 @@ public:
 
 private:
 	Frustum* frustum;
+	int speed;
 
 	float4x4 proj;
 	float4x4 view;

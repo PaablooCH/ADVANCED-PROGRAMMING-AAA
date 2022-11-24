@@ -1,12 +1,12 @@
-#include "assimp/ai_assert.h"
-#include "assimp/scene.h"
-#include "assimp/cimport.h"
-#include "assimp/postprocess.h"
 #include "Model.h"
 #include "Application.h"
 #include "ModuleTexture.h"
 #include "ModuleEditor.h"
 #include "Globals.h"
+#include "assimp/ai_assert.h"
+#include "assimp/scene.h"
+#include "assimp/cimport.h"
+#include "assimp/postprocess.h"
 
 Model::Model(const char* fileName)
 {

@@ -1,10 +1,9 @@
 #pragma once
-#include <vector>
-#include "GL/glew.h"
 #include "Mesh.h"
 #include "ModuleTexture.h"
-
-class aiMaterial;
+#include <vector>
+#include "GL/glew.h"
+#include "assimp/material.h"
 
 class Model
 {

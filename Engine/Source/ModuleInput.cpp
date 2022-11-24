@@ -65,49 +65,49 @@ update_status ModuleInput::Update()
                 if (sdlEvent.motion.state == SDL_BUTTON_MMASK) { //Mouse Middle button
                     if (sdlEvent.motion.xrel < 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->MoveRight(10.f);
+                            App->camera->MoveLeftRight(-2.f);
                         }
                         else {
-                            App->camera->MoveRight(5.f);
+                            App->camera->MoveLeftRight(-1.f);
                         }
                     }
                     if (sdlEvent.motion.xrel > 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->MoveLeft(10.f);
+                            App->camera->MoveLeftRight(2.f);
                         }
                         else {
-                            App->camera->MoveLeft(5.f);
+                            App->camera->MoveLeftRight(1.f);
                         }
                     }
                     if (sdlEvent.motion.yrel > 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->GoDown(10.f);
+                            App->camera->GoUpDown(-2.f);
                         }
                         else {
-                            App->camera->GoDown(5.f);
+                            App->camera->GoUpDown(-1.f);
                         }
                     }
                     if (sdlEvent.motion.yrel < 0) {
                         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                            App->camera->GoUp(10.f);
+                            App->camera->GoUpDown(2.f);
                         }
                         else {
-                            App->camera->GoUp(5.f);
+                            App->camera->GoUpDown(1.f);
                         }
                     }
                 }
                 if (sdlEvent.motion.state == SDL_BUTTON_RMASK) { //Mouse Right button
                     if (sdlEvent.motion.xrel > 0) {
-                        App->camera->RotationYClockwise(float(sdlEvent.motion.xrel));
+                        App->camera->RotationY(float(sdlEvent.motion.xrel));
                     }
                     else if (sdlEvent.motion.xrel < 0) {
-                        App->camera->RotationYCounterclockwise(float(-sdlEvent.motion.xrel));
+                        App->camera->RotationY(float(sdlEvent.motion.xrel));
                     }
                     if (sdlEvent.motion.yrel > 0) {
-                        App->camera->RotationXCounterclockwise(float(sdlEvent.motion.yrel));
+                        App->camera->RotationX(float(sdlEvent.motion.yrel));
                     }
                     else if (sdlEvent.motion.yrel < 0) {
-                        App->camera->RotationXClockwise(float(-sdlEvent.motion.yrel));
+                        App->camera->RotationX(float(sdlEvent.motion.yrel));
                     }
                 }
                 break;
@@ -115,19 +115,19 @@ update_status ModuleInput::Update()
                 if (sdlEvent.wheel.y > 0) // scroll up
                 {
                     if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                        App->camera->MoveForward(20.f);
+                        App->camera->MoveFrontBack(10.f);
                     }
                     else {
-                        App->camera->MoveForward(10.f);
+                        App->camera->MoveFrontBack(5.f);
                     }
                 }
                 else if (sdlEvent.wheel.y < 0) // scroll down
                 {
                     if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-                        App->camera->MoveBackward(20.f);
+                        App->camera->MoveFrontBack(-10.f);
                     }
                     else {
-                        App->camera->MoveBackward(10.f);
+                        App->camera->MoveFrontBack(-5.f);
                     }
                 }
                 break;
@@ -139,63 +139,63 @@ update_status ModuleInput::Update()
     }
     if (keyboard[SDL_SCANCODE_W]) { //MoveForward
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveForward(10.f);
+            App->camera->MoveFrontBack(2.f);
         }
         else {
-            App->camera->MoveForward(5.f);
+            App->camera->MoveFrontBack(1.f);
         }
     }
     if (keyboard[SDL_SCANCODE_S]) { //MoveBackward
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveBackward(10.f);
+            App->camera->MoveFrontBack(-2.f);
         }
         else {
-            App->camera->MoveBackward(5.f);
+            App->camera->MoveFrontBack(-1.f);
         }
     }
     if (keyboard[SDL_SCANCODE_A]) { //MoveLeft
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveLeft(10.f);
+            App->camera->MoveLeftRight(-2.f);
         }
         else {
-            App->camera->MoveLeft(5.f);
+            App->camera->MoveLeftRight(-1.f);
         }
     }
     if (keyboard[SDL_SCANCODE_D]) { //MoveRight
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->MoveRight(10.f);
+            App->camera->MoveLeftRight(2.f);
         }
         else {
-            App->camera->MoveRight(5.f);
+            App->camera->MoveLeftRight(1.f);
         }
     }
     if (keyboard[SDL_SCANCODE_Q]) { //GoUp
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->GoUp(10.f);
+            App->camera->GoUpDown(2.f);
         }
         else {
-            App->camera->GoUp(5.f);
+            App->camera->GoUpDown(1.f);
         }
     }
     if (keyboard[SDL_SCANCODE_E]) { // GoDown
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
-            App->camera->GoDown(10.f);
+            App->camera->GoUpDown(-2.f);
         }
         else {
-            App->camera->GoDown(5.f);
+            App->camera->GoUpDown(-1.f);
         }
     }
     if (keyboard[SDL_SCANCODE_UP]) {
-        App->camera->RotationXClockwise(20.f);
+        App->camera->RotationX(5.f);
     }
     if (keyboard[SDL_SCANCODE_DOWN]) {
-        App->camera->RotationXCounterclockwise(20.f);
+        App->camera->RotationX(-5.f);
     }
     if (keyboard[SDL_SCANCODE_LEFT]) {
-        App->camera->RotationYCounterclockwise(20.f);
+        App->camera->RotationY(5.f);
     }
     if (keyboard[SDL_SCANCODE_RIGHT]) {
-        App->camera->RotationYClockwise(20.f);
+        App->camera->RotationY(-5.f);
     }
 
     return UPDATE_CONTINUE;

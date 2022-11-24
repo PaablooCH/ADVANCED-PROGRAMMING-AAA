@@ -18,6 +18,7 @@ bool ModuleCamera::Init()
     frustum->SetFrame(float3(0, 2, 8), -float3::unitZ, float3::unitY);
     frustum->SetViewPlaneDistances(0.1f, 100.0f);
     frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * 90, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
+    speed = 10;
     return true;
 }
 
@@ -52,60 +53,31 @@ void ModuleCamera::SetFOV(const float&& deg)
     frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov() + DEGTORAD * deg, frustum->AspectRatio());
 }
 
-void ModuleCamera::MoveForward(const float&& multiplier)
+void ModuleCamera::MoveFrontBack(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * 0.1f * multiplier * App->timer->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * speed * multiplier * App->timer->deltaTime);
 }
 
-void ModuleCamera::MoveBackward(const float&& multiplier)
+void ModuleCamera::MoveLeftRight(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * -0.1f * multiplier * App->timer->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * speed * multiplier * App->timer->deltaTime);
 }
 
-void ModuleCamera::MoveLeft(const float&& multiplier)
+void ModuleCamera::GoUpDown(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * -0.1f * multiplier * App->timer->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * speed * multiplier * App->timer->deltaTime);
 }
 
-void ModuleCamera::MoveRight(const float&& multiplier)
+void ModuleCamera::RotationY(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * 0.1f * multiplier * App->timer->deltaTime);
-}
-
-void ModuleCamera::GoUp(const float&& multiplier)
-{
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * .1f * multiplier * App->timer->deltaTime);
-}
-
-void ModuleCamera::GoDown(const float&& multiplier)
-{
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * -.1f * multiplier * App->timer->deltaTime);
-}
-
-void ModuleCamera::RotationYClockwise(const float&& multiplier)
-{
-    float4x4 giro = float3x3::RotateY(DEGTORAD * -10 * multiplier * App->timer->deltaTime) * frustum->WorldMatrix();
+    float4x4 giro = float3x3::RotateY(DEGTORAD * speed * multiplier * App->timer->deltaTime) * frustum->WorldMatrix();
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
-void ModuleCamera::RotationXClockwise(const float&& multiplier) //TODO multiplier +/-
+void ModuleCamera::RotationX(const float&& multiplier) //TODO multiplier +/-
 {
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * 10 * multiplier * App->timer->deltaTime);
-    frustum->SetFront(giro.MulDir(-float3::unitZ));
-    frustum->SetUp(giro.MulDir(float3::unitY));
-}
-
-void ModuleCamera::RotationYCounterclockwise(const float&& multiplier)
-{
-    float4x4 giro = float3x3::RotateY(DEGTORAD * 10 * multiplier * App->timer->deltaTime) * frustum->WorldMatrix();
-    frustum->SetFront(giro.MulDir(-float3::unitZ));
-    frustum->SetUp(giro.MulDir(float3::unitY));
-}
-
-void ModuleCamera::RotationXCounterclockwise(const float&& multiplier)
-{
-    float4x4 giro = frustum->WorldMatrix()* float3x3::RotateX(DEGTORAD * -10 * multiplier * App->timer->deltaTime);
+    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * speed * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
