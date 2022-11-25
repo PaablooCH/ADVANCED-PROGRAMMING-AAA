@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include "Application.h"
-#include "ModuleProgram.h"
 #include "ModuleCamera.h"
+#include "ModuleRender.h"
 #include "MathGeoLib/Math/float2.h"
 
 Mesh::Mesh(const aiMesh* mesh)
@@ -21,7 +21,7 @@ Mesh::~Mesh()
 
 void Mesh::Draw(const std::vector<InfoTexture>& modelTextures)
 {
-	unsigned program = App->program->CreateProgram();
+	unsigned program = App->renderer->GetProgram();
 	const float4x4& view = App->camera->GetViewMatrix();
 	const float4x4& proj = App->camera->ProjectionMatrix();
 	float4x4 model = float4x4::identity;

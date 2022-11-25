@@ -1,11 +1,10 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
+#include "ModuleProgram.h"
 #include "SDL.h"
-#include "GL/glew.h"
 
 ModuleRender::ModuleRender()
 {
@@ -49,6 +48,12 @@ bool ModuleRender::Init()
 	return true;
 }
 
+bool ModuleRender::Start()
+{
+	program = App->program->CreateProgram();
+	return true;
+}
+
 update_status ModuleRender::PreUpdate()
 {
 	int h, w;
@@ -75,6 +80,8 @@ bool ModuleRender::CleanUp()
 {
 	//LOG_ENGINE("Destroying renderer");
 	App->editor->logs.emplace_back("Destroying renderer");
+
+	glDeleteProgram(program);
 
 	SDL_GL_DeleteContext(context);
 

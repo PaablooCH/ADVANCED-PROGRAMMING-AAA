@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "GL/glew.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -13,12 +14,17 @@ public:
 	~ModuleRender();
 
 	bool Init() override;
+	bool Start() override;
 	update_status PreUpdate() override;
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 	void WindowResized(unsigned width, unsigned height);
+	inline unsigned GetProgram() {
+		return program;
+	}
 
 public:
 	void* context;
+	unsigned program;
 };
