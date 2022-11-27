@@ -16,6 +16,11 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
+
+	inline Model* GetModel() {
+		return model;
+	}
+
 private:
 	Model* model;
 	

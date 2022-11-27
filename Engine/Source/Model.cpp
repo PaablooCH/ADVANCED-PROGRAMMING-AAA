@@ -15,6 +15,11 @@ Model::Model(const char* fileName)
 	{
 		LoadMaterials(scene->mMaterials, scene->mNumMaterials);
 		LoadMeshes(scene->mMeshes, scene->mNumMeshes);
+
+		modelMatrix = float4x4::identity;
+		for (int i = 0; i < meshes.size(); ++i) {
+
+		}
 	}
 	else
 	{
@@ -40,6 +45,13 @@ void Model::Draw()
 	}
 }
 
+float3 Model::GetCenter() const
+{
+	return float3(minPoint.x + (maxPoint.x - minPoint.x) / 2.0f, //TODO Aplicar Transformaciones del objeto
+		minPoint.y + (maxPoint.y - minPoint.y) / 2.0f, 
+		minPoint.z + (maxPoint.z - minPoint.z) / 2.0f);
+}
+
 void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials)
 {
 	aiString file;
@@ -60,7 +72,6 @@ void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMateri
 
 void Model::LoadMeshes(aiMesh** aiMesh, const unsigned int& numMeshes)
 {
-	App->editor->logs.emplace_back("Assimp: Loading the meshes");
 	meshes = std::vector<Mesh*>(numMeshes);
 	App->editor->logs.emplace_back("Loading meshes.");
 
@@ -68,5 +79,19 @@ void Model::LoadMeshes(aiMesh** aiMesh, const unsigned int& numMeshes)
 	{
 		LOG_ENGINE("Assimp: Loading the mesh %i", i);
 		meshes[i] = new Mesh(aiMesh[i]);
+	}
+
+	minPoint = meshes[0]->min;
+	maxPoint = meshes[0]->max;
+	for (unsigned int i = 0; i < numMeshes; ++i)
+	{
+		if (maxPoint.x < meshes[i]->max.x) maxPoint.x = meshes[i]->max.x;
+		if (minPoint.x > meshes[i]->min.x) minPoint.x = meshes[i]->min.x;
+		
+		if (maxPoint.y < meshes[i]->max.y) maxPoint.y = meshes[i]->max.y;
+		if (minPoint.y > meshes[i]->min.y) minPoint.y = meshes[i]->min.y;
+		
+		if (maxPoint.z < meshes[i]->max.z) maxPoint.z = meshes[i]->max.z;
+		if (minPoint.z > meshes[i]->min.z) minPoint.z = meshes[i]->min.z;
 	}
 }

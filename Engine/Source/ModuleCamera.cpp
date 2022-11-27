@@ -1,15 +1,17 @@
 #include "ModuleCamera.h"
-#include "GL/glew.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "ModuleTimer.h"
+#include "ModuleRenderExercise.h"
 #include "Application.h"
 #include "MathGeoLib/Math/float3x3.h"
 #include "MathGeoLib/Math/float4x4.h"
+#include "MathGeoLib/Math/Quat.h"
 
 ModuleCamera::ModuleCamera()
 {
     frustum = new Frustum();
+    rotateOption = false;
 }
 
 bool ModuleCamera::Init()
@@ -75,11 +77,67 @@ void ModuleCamera::RotationY(const float&& multiplier)
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
-void ModuleCamera::RotationX(const float&& multiplier) //TODO multiplier +/-
+void ModuleCamera::RotationX(const float&& multiplier) //TODO unir x e y
 {
     float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * speed * multiplier * App->timer->deltaTime);
     frustum->SetFront(giro.MulDir(-float3::unitZ));
     frustum->SetUp(giro.MulDir(float3::unitY));
+}
+
+//void ModuleCamera::RotationYObject(const float&& multiplierX, const float&& multiplierY)
+//{
+//    float3 frontActual = frustum->Front();
+//    float3 distancia = (frontActual - centerObject).Normalized();
+//    float3 up = frustum->Up();
+//
+//    Quat RotationX = Quat(up, multiplierY * App->timer->deltaTime * DEGTORAD*0.01);
+//    Quat RotationY = Quat(frustum->WorldRight(), multiplierX * App->timer->deltaTime * DEGTORAD*0.01);
+//    float3 vectorTransform = RotationX.Transform(distancia);
+//    vectorTransform = RotationY.Transform(vectorTransform);
+//
+//    //float3 vectorTransform = RotationX * distancia + centerObject;
+//    //vectorTransform = RotationY * (vectorTransform.Normalized() - centerObject) + centerObject;
+//
+//    //vectorTransform = vectorTransform.Normalized() * distancia.Length()*5;
+//
+//    float3 pos = centerObject + vectorTransform;
+//
+//    float3 front = (centerObject - pos).Normalized();
+//    float3 right = Cross(up, front).Normalized();
+//    up = Cross(front, right).Normalized();
+//    
+//    //float3x3 cameraMatrix = float3x3(right, up, front); //Probar con quad
+//    frustum->SetFrame(pos, front, up);
+//    
+//}
+ 
+void ModuleCamera::RotationObject(const float&& multiplierX, const float&& multiplierY)
+{
+    float3 centerObject = App->exercise->GetModel()->GetCenter();
+    // Get orbit point (object transform)
+    float3 distance = frustum->Pos() - centerObject;
+
+    // Rotate it
+    Quat RotationX = Quat(frustum->Up(), multiplierX * speed * App->timer->deltaTime * DEGTORAD);
+    Quat RotationY = Quat(frustum->WorldRight(), multiplierY * speed * App->timer->deltaTime * DEGTORAD);
+
+    // If we look at the object from the bottom or top dont rotate the object
+    float cosAngle = Dot(frustum->Front(), float3::unitY);
+    if (cosAngle > 0.99f) {
+        RotationY = Quat(frustum->WorldRight(), -0.5 * DEGTORAD);
+    }
+    else if (cosAngle < -0.99f) {
+        RotationY = Quat(frustum->WorldRight(), 0.5 * DEGTORAD);
+    }
+
+    distance = RotationX.Transform(distance);
+    distance = RotationY.Transform(distance);
+
+    // Set camera to where the rotated vector points from its starting position
+    frustum->SetPos(distance + centerObject);
+
+    // Look At the object
+    LookAt(centerObject);
 }
 
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)
@@ -103,7 +161,11 @@ void ModuleCamera::Orientation(const vec& up)
     frustum->SetUp(up);
 }
 
-void ModuleCamera::LookAt(const float& x, const float& y, const float& z)
+void ModuleCamera::LookAt(float3 lookAt)
 {
-    frustum->SetFront(vec(x, y, z));
+    float3 direction = lookAt - frustum->Pos();
+    // localForward, targetDirection, localUp, worldUp
+    float3x3 lookDir = float3x3::LookAt(frustum->Front(), direction.Normalized(), frustum->Up(), float3::unitY);
+    frustum->SetFront(lookDir.MulDir(frustum->Front()).Normalized());
+    frustum->SetUp(lookDir.MulDir(frustum->Up()).Normalized());
 }

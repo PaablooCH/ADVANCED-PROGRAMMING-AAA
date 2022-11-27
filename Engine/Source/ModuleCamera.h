@@ -20,17 +20,20 @@ public:
 	void GoUpDown(const float&& multiplier);
 	void RotationY(const float&& multiplier);
 	void RotationX(const float&& multiplier);
+	void RotationObject(const float&& multiplierX, const float&& multiplierY);
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);
 	void Position(const vec& pos);
 	void Orientation(const vec& up);
-	void LookAt(const float& x, const float& y, const float& z);
+	void LookAt(float3 lookAt);
 	inline float4x4 ProjectionMatrix() {
 		return proj;
 	}
 	inline float4x4 GetViewMatrix() {
 		return view;
 	}
+
+	bool rotateOption; //True -> arround an object, false -> her axis
 
 private:
 	Frustum* frustum;

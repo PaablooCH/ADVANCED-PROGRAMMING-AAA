@@ -52,6 +52,10 @@ update_status ModuleInput::Update()
                 break;
             case SDL_MOUSEBUTTONUP:
                 if (sdlEvent.button.button == SDL_BUTTON_LEFT && keyboard[SDL_SCANCODE_LALT]) {
+                    App->camera->rotateOption = !App->camera->rotateOption;
+                    App->editor->logs.emplace_back("Rotation Option changed");
+                }
+                if (sdlEvent.button.button == SDL_BUTTON_RIGHT && keyboard[SDL_SCANCODE_RALT]) {
                     App->camera->SetFOV(-5);
                 }
                 if (sdlEvent.button.button == SDL_BUTTON_RIGHT && keyboard[SDL_SCANCODE_LALT]) {
@@ -97,17 +101,12 @@ update_status ModuleInput::Update()
                     }
                 }
                 if (sdlEvent.motion.state == SDL_BUTTON_RMASK) { //Mouse Right button
-                    if (sdlEvent.motion.xrel > 0) {
-                        App->camera->RotationY(float(sdlEvent.motion.xrel));
+                    if (!App->camera->rotateOption) { //Rotate camera
+                        App->camera->RotationY(float(-sdlEvent.motion.xrel));
+                        App->camera->RotationX(float(-sdlEvent.motion.yrel));
                     }
-                    else if (sdlEvent.motion.xrel < 0) {
-                        App->camera->RotationY(float(sdlEvent.motion.xrel));
-                    }
-                    if (sdlEvent.motion.yrel > 0) {
-                        App->camera->RotationX(float(sdlEvent.motion.yrel));
-                    }
-                    else if (sdlEvent.motion.yrel < 0) {
-                        App->camera->RotationX(float(sdlEvent.motion.yrel));
+                    else { //Rotate arround object
+                        App->camera->RotationObject(float(-sdlEvent.motion.xrel), float(-sdlEvent.motion.yrel));
                     }
                 }
                 break;
