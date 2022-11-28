@@ -18,8 +18,7 @@ public:
 	void MoveFrontBack(const float&& multiplier);
 	void MoveLeftRight(const float&& multiplier);
 	void GoUpDown(const float&& multiplier);
-	void RotationY(const float&& multiplier);
-	void RotationX(const float&& multiplier);
+	void RotationCamera(const float&& multiplierX, const float&& multiplierY);
 	void OrbitObject(const float&& multiplierX, const float&& multiplierY);
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);

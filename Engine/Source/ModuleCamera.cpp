@@ -70,18 +70,19 @@ void ModuleCamera::GoUpDown(const float&& multiplier)
     frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * speed * multiplier * App->timer->deltaTime);
 }
 
-void ModuleCamera::RotationY(const float&& multiplier)
+void ModuleCamera::RotationCamera(const float&& multiplierX, const float&& multiplierY)
 {
-    float4x4 giro = float3x3::RotateY(DEGTORAD * speed * multiplier * App->timer->deltaTime) * frustum->WorldMatrix();
-    frustum->SetFront(giro.MulDir(-float3::unitZ));
-    frustum->SetUp(giro.MulDir(float3::unitY));
-}
+    Quat rotationX = Quat(frustum->Up(), multiplierX * speed * App->timer->deltaTime * DEGTORAD);
+    Quat rotationY = Quat::RotateX(multiplierY * speed * App->timer->deltaTime * DEGTORAD);
 
-void ModuleCamera::RotationX(const float&& multiplier) //TODO unir x e y
-{
-    float4x4 giro = frustum->WorldMatrix() * float3x3::RotateX(DEGTORAD * speed * multiplier * App->timer->deltaTime);
-    frustum->SetFront(giro.MulDir(-float3::unitZ));
-    frustum->SetUp(giro.MulDir(float3::unitY));
+    float3 up = rotationX.Transform(frustum->Up());
+    up = rotationY.Transform(up);
+
+    float3 front = rotationX.Transform(frustum->Front());
+    front = rotationY.Transform(front);
+
+    frustum->SetFront(front);
+    frustum->SetUp(up);
 }
 
 void ModuleCamera::OrbitObject(const float&& multiplierX, const float&& multiplierY)
@@ -91,20 +92,20 @@ void ModuleCamera::OrbitObject(const float&& multiplierX, const float&& multipli
     float3 distance = frustum->Pos() - centerObject;
 
     // Rotate it
-    Quat RotationX = Quat(frustum->Up(), multiplierX * speed * App->timer->deltaTime * DEGTORAD);
-    Quat RotationY = Quat(frustum->WorldRight(), multiplierY * speed * App->timer->deltaTime * DEGTORAD);
+    Quat rotationX = Quat(frustum->Up(), multiplierX * speed * App->timer->deltaTime * DEGTORAD);
+    Quat rotationY = Quat(frustum->WorldRight(), multiplierY * speed * App->timer->deltaTime * DEGTORAD);
 
     // If we look at the object from the bottom or top dont rotate the object
     float cosAngle = Dot(frustum->Front(), float3::unitY);
     if (cosAngle > 0.99f) {
-        RotationY = Quat(frustum->WorldRight(), -0.5 * DEGTORAD);
+        rotationY = Quat(frustum->WorldRight(), -0.5 * DEGTORAD);
     }
     else if (cosAngle < -0.99f) {
-        RotationY = Quat(frustum->WorldRight(), 0.5 * DEGTORAD);
+        rotationY = Quat(frustum->WorldRight(), 0.5 * DEGTORAD);
     }
 
-    distance = RotationX.Transform(distance);
-    distance = RotationY.Transform(distance);
+    distance = rotationX.Transform(distance);
+    distance = rotationY.Transform(distance);
 
     // Set camera to where the rotated vector points from its starting position
     frustum->SetPos(distance + centerObject);

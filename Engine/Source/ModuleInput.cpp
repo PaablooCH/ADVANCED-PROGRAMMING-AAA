@@ -102,8 +102,7 @@ update_status ModuleInput::Update()
                 }
                 if (sdlEvent.motion.state == SDL_BUTTON_RMASK) { //Mouse Right button
                     if (!App->camera->rotateOption) { //Rotate camera
-                        App->camera->RotationY(float(-sdlEvent.motion.xrel));
-                        App->camera->RotationX(float(-sdlEvent.motion.yrel));
+                        App->camera->RotationCamera(float(-sdlEvent.motion.xrel), float(-sdlEvent.motion.yrel));
                     }
                     else { //Rotate arround object
                         App->camera->OrbitObject(float(-sdlEvent.motion.xrel), float(-sdlEvent.motion.yrel));
@@ -185,16 +184,16 @@ update_status ModuleInput::Update()
         }
     }
     if (keyboard[SDL_SCANCODE_UP]) {
-        App->camera->RotationX(5.f);
+        App->camera->RotationCamera(0.f, 5.f);
     }
     if (keyboard[SDL_SCANCODE_DOWN]) {
-        App->camera->RotationX(-5.f);
+        App->camera->RotationCamera(0.f, -5.f);
     }
     if (keyboard[SDL_SCANCODE_LEFT]) {
-        App->camera->RotationY(5.f);
+        App->camera->RotationCamera(5.f, 0.f);
     }
     if (keyboard[SDL_SCANCODE_RIGHT]) {
-        App->camera->RotationY(-5.f);
+        App->camera->RotationCamera(-5.f, 0.f);
     }
 
     return UPDATE_CONTINUE;
