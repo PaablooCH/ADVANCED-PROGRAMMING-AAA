@@ -20,7 +20,7 @@ public:
 	void GoUpDown(const float&& multiplier);
 	void RotationY(const float&& multiplier);
 	void RotationX(const float&& multiplier);
-	void RotationObject(const float&& multiplierX, const float&& multiplierY);
+	void OrbitObject(const float&& multiplierX, const float&& multiplierY);
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);
 	void Position(const vec& pos);

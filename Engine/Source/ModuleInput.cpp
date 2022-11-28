@@ -106,7 +106,7 @@ update_status ModuleInput::Update()
                         App->camera->RotationX(float(-sdlEvent.motion.yrel));
                     }
                     else { //Rotate arround object
-                        App->camera->RotationObject(float(-sdlEvent.motion.xrel), float(-sdlEvent.motion.yrel));
+                        App->camera->OrbitObject(float(-sdlEvent.motion.xrel), float(-sdlEvent.motion.yrel));
                     }
                 }
                 break;

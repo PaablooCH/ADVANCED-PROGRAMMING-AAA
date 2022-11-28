@@ -84,34 +84,7 @@ void ModuleCamera::RotationX(const float&& multiplier) //TODO unir x e y
     frustum->SetUp(giro.MulDir(float3::unitY));
 }
 
-//void ModuleCamera::RotationYObject(const float&& multiplierX, const float&& multiplierY)
-//{
-//    float3 frontActual = frustum->Front();
-//    float3 distancia = (frontActual - centerObject).Normalized();
-//    float3 up = frustum->Up();
-//
-//    Quat RotationX = Quat(up, multiplierY * App->timer->deltaTime * DEGTORAD*0.01);
-//    Quat RotationY = Quat(frustum->WorldRight(), multiplierX * App->timer->deltaTime * DEGTORAD*0.01);
-//    float3 vectorTransform = RotationX.Transform(distancia);
-//    vectorTransform = RotationY.Transform(vectorTransform);
-//
-//    //float3 vectorTransform = RotationX * distancia + centerObject;
-//    //vectorTransform = RotationY * (vectorTransform.Normalized() - centerObject) + centerObject;
-//
-//    //vectorTransform = vectorTransform.Normalized() * distancia.Length()*5;
-//
-//    float3 pos = centerObject + vectorTransform;
-//
-//    float3 front = (centerObject - pos).Normalized();
-//    float3 right = Cross(up, front).Normalized();
-//    up = Cross(front, right).Normalized();
-//    
-//    //float3x3 cameraMatrix = float3x3(right, up, front); //Probar con quad
-//    frustum->SetFrame(pos, front, up);
-//    
-//}
- 
-void ModuleCamera::RotationObject(const float&& multiplierX, const float&& multiplierY)
+void ModuleCamera::OrbitObject(const float&& multiplierX, const float&& multiplierY)
 {
     float3 centerObject = App->exercise->GetModel()->GetCenter();
     // Get orbit point (object transform)
