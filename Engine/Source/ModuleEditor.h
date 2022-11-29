@@ -1,10 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "Application.h"
-#include "imgui.h"
-#include "imgui_impl_sdl.h"
-#include "imgui_impl_opengl3.h"
 #include <vector>
+#include<list>
+
+class Panel;
 
 class ModuleEditor : public Module
 {
@@ -18,24 +18,21 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
-
-	std::vector<const char*> logs;
-
-private:
-	void DrawLog(const char* title, bool& p_open);
-	void DrawConfig(const char* title, bool& p_open);
-	void DrawAbout(const char* title, bool& p_open);
 	inline void ClearLog() {
 		logs.clear();
 	}
 
+	std::vector<float> GetFps();
+	std::vector<float> GetMili();
+
+	std::vector<const char*> logs;
+
+private:
 	std::vector<float> fpsLogs;
 	std::vector<float> miliLogs;
+	std::list<Panel*> panels;
 
-	ImVec4 clear_color;
 	int loops;
 	int maxSizeFPS = 60;
-	bool autoScroll;
-	bool scrollToBottom;
 };
 

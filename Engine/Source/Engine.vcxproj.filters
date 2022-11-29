@@ -193,6 +193,18 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConfig.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelAbout.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConsole.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -501,6 +513,18 @@
     <ClInclude Include="Mesh.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConfig.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelAbout.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -523,6 +547,9 @@
     </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{474fedd3-caf1-491c-88ba-a159cff0c123}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Panels">
+      <UniqueIdentifier>{3e30e36e-877b-4b5d-b699-d245d594da18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

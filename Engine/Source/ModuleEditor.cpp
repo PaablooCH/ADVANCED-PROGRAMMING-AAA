@@ -1,4 +1,9 @@
 ﻿#include "ModuleEditor.h"
+#include "Panel.h"
+#include "PanelConsole.h"
+#include "PanelConfig.h"
+#include "PanelAbout.h"
+#include "PanelLog.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
@@ -10,7 +15,6 @@
 
 ModuleEditor::ModuleEditor()
 {
-    clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
 }
 
 ModuleEditor::~ModuleEditor()
@@ -39,6 +43,10 @@ bool ModuleEditor::Start()
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
     ImGui_ImplOpenGL3_Init(GLSL_VERSION);
 
+    panels.push_back(new PanelConsole("Console"));
+    panels.push_back(new PanelConfig("Configuration"));
+    panels.push_back(new PanelAbout("About"));
+
     return true;
 }
 
@@ -62,13 +70,9 @@ update_status ModuleEditor::PreUpdate()
 
 update_status ModuleEditor::Update()
 {
-    bool openConsole = false;
-    bool openConfig = false;
-    bool openAbout = false;
-
-    DrawLog("Console", openConsole);
-    DrawConfig("Configuration", openConfig);
-    DrawAbout("About", openAbout);
+    for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it) {
+        (*it)->Draw();
+    }
     //ImGui::ShowDemoWindow(); //TODO eliminarlo al final
     return UPDATE_CONTINUE;
 }
@@ -88,6 +92,9 @@ update_status ModuleEditor::PostUpdate()
 
 bool ModuleEditor::CleanUp()
 {
+    for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it) {
+        delete (*it);
+    }
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
@@ -96,286 +103,12 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
-void ModuleEditor::DrawLog(const char* title, bool& p_open)
+std::vector<float> ModuleEditor::GetFps()
 {
-    ImGui::SetNextWindowSize(ImVec2(300, 480), ImGuiCond_Always);
-    if (!ImGui::Begin(title, &p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    // As a specific feature guaranteed by the library, after calling Begin() the last Item represent the title bar.
-    // So e.g. IsItemHovered() will return true when hovering the title bar.
-    // Here we create a context menu only available from the title bar.
-    if (ImGui::BeginPopupContextItem())
-    {
-        if (ImGui::MenuItem("Close Console"))
-            p_open = false;
-        ImGui::EndPopup();
-    }
-
-    // TODO: display items starting from the bottom
-
-    if (ImGui::SmallButton("Clear")) { ClearLog(); }
-    ImGui::SameLine();
-    bool copy_to_clipboard = ImGui::SmallButton("Copy");
-    //static float t = 0.0f; if (ImGui::GetTime() - t > 0.02f) { t = ImGui::GetTime(); AddLog("Spam %f", t); }
-
-    ImGui::Separator();
-
-    // Options menu
-    if (ImGui::BeginPopup("Options"))
-    {
-        ImGui::Checkbox("Auto-scroll", &autoScroll);
-        ImGui::EndPopup();
-    }
-
-    // Reserve enough left-over height for 1 separator + 1 input text
-    const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-    if (ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar))
-    {
-        if (ImGui::BeginPopupContextWindow())
-        {
-            if (ImGui::Selectable("Clear")) ClearLog();
-            ImGui::EndPopup();
-        }
-
-        // Display every line as a separate entry so we can change their color or add custom widgets.
-        // If you only want raw text you can use ImGui::TextUnformatted(log.begin(), log.end());
-        // NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping
-        // to only process visible items. The clipper will automatically measure the height of your first item and then
-        // "seek" to display only items in the visible area.
-        // To use the clipper we can replace your standard loop:
-        //      for (int i = 0; i < Items.Size; i++)
-        //   With:
-        //      ImGuiListClipper clipper;
-        //      clipper.Begin(Items.Size);
-        //      while (clipper.Step())
-        //         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-        // - That your items are evenly spaced (same height)
-        // - That you have cheap random access to your elements (you can access them given their index,
-        //   without processing all the ones before)
-        // You cannot this code as-is if a filter is active because it breaks the 'cheap random-access' property.
-        // We would need random-access on the post-filtered list.
-        // A typical application wanting coarse clipping and filtering may want to pre-compute an array of indices
-        // or offsets of items that passed the filtering test, recomputing this array when user changes the filter,
-        // and appending newly elements as they are inserted. This is left as a task to the user until we can manage
-        // to improve this example code!
-        // If your items are of variable height:
-        // - Split them into same height items would be simpler and facilitate random-seeking into your list.
-        // - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
-        if (copy_to_clipboard)
-            ImGui::LogToClipboard();
-        for (int i = 0; i < logs.size(); i++)
-        {
-            const char* item = logs[i];
-            
-            // Normally you would store more information in your item than just a string.
-            // (e.g. make Items[] an array of structure, store color/type etc.)
-            ImVec4 color;
-            bool has_color = false;
-            if (strstr(item, "[error]")) { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
-            else if (strncmp(item, "# ", 2) == 0) { color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f); has_color = true; }
-            if (has_color)
-                ImGui::PushStyleColor(ImGuiCol_Text, color);
-            ImGui::TextUnformatted(item);
-            if (has_color)
-                ImGui::PopStyleColor();
-        }
-        if (copy_to_clipboard)
-            ImGui::LogFinish();
-
-        // Keep up at the bottom of the scroll region if we were already at the bottom at the beginning of the frame.
-        // Using a scrollbar or mouse-wheel will take away from the bottom edge.
-        if (scrollToBottom || (autoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY()))
-            ImGui::SetScrollHereY(1.0f);
-        scrollToBottom = false;
-
-        ImGui::PopStyleVar();
-    }
-    ImGui::EndChild();
-
-    // Auto-focus on window apparition
-    ImGui::SetItemDefaultFocus();
-    ImGui::End();
+    return fpsLogs;
 }
 
-void ModuleEditor::DrawConfig(const char* title, bool& p_open)
+std::vector<float> ModuleEditor::GetMili()
 {
-    ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_Always);
-    if (!ImGui::Begin(title, &p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::CollapsingHeader("Application"))
-    {
-        char title[25];
-        sprintf_s(title, 25, "Framerate %.1f", fpsLogs[fpsLogs.size() - 1]);
-        ImGui::PlotHistogram("##framerate", &fpsLogs[0], fpsLogs.size(), 0, title, 0.0f, 200.0f, ImVec2(310.0f, 100.0f));
-        sprintf_s(title, 25, "Milliseconds %.1f", miliLogs[miliLogs.size() - 1]);
-        ImGui::PlotHistogram("##milliseconds", &miliLogs[0], miliLogs.size(), 0, title, 0.0f, 40.0f, ImVec2(310.0f, 100.0f));
-        ImGui::Separator();
-    }
-    if (ImGui::CollapsingHeader("Window"))
-    {
-        static bool winFullscreen = false;
-        static bool winResizable = true;
-        static bool winBorderless = false;
-        static bool winFullscreenDsktp = false; //TODO implementar
-
-        static float brightness = App->window->GetBrightness();
-
-        if (ImGui::SliderFloat("Brightness", &brightness, 0, 1)) {
-            App->window->SetBrightness(brightness);
-        }
-
-        static int widht = App->window->width;
-        if (ImGui::SliderInt("Widht", &widht, 0, App->window->maxWidht)) {
-            App->window->SetWidht(widht);
-        }
-
-        static int height = App->window->height;
-        if (ImGui::SliderInt("Height", &height, 0, App->window->maxHeight)) {
-            App->window->SetHeight(height);
-        }
-
-
-        if (ImGui::Checkbox("FULLSCREEN   |  ", &winFullscreen))
-        {
-            App->window->SetFullScreen(winFullscreen);
-
-        }
-        ImGui::SameLine();
-        if (ImGui::Checkbox("RESIZABLE", &winResizable))
-        {
-            App->window->SetResizable(winResizable);
-        }
-
-        if (ImGui::Checkbox("BORDERLESS   |  ", &winBorderless))
-        {
-            App->window->SetBorderless(winBorderless);
-        }
-        ImGui::SameLine();
-        if (ImGui::Checkbox("FULLSCREEN DSKTP", &winFullscreenDsktp))
-        {
-            //TODO Implementar
-        }
-    }
-    if (ImGui::CollapsingHeader("Hardware")) {
-        SDL_version sdl_ver;
-        SDL_VERSION(&sdl_ver);
-
-        ImGui::Text("SDL version:");
-        ImGui::SameLine();
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%u.%u.%u", sdl_ver.major, sdl_ver.minor, sdl_ver.patch);
-        ImGui::Separator();
-        //-------------------------------
-        ImGui::Text("CPUs:");
-        ImGui::SameLine();
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%u (Cache: %ukb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
-        ImGui::Text("System RAM:");
-        ImGui::SameLine();
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%uGb", SDL_GetSystemRAM());
-        ImGui::Text("Caps:");
-        ImGui::SameLine();
-        std::vector<const char*> caps;
-        if (SDL_Has3DNow()) {
-            caps.emplace_back("3DNow");
-        }
-        if (SDL_HasAltiVec()) {
-            caps.emplace_back("AltiVec");
-        }
-        if (SDL_HasAVX()) {
-            caps.emplace_back("AVX");
-        }
-        if (SDL_HasAVX2()) {
-            caps.emplace_back("AVX2");
-        }
-        if (SDL_HasMMX()) {
-            caps.emplace_back("MMX");
-        }
-        if (SDL_HasRDTSC()) {
-            caps.emplace_back("RDTSC");
-        }
-        if (SDL_HasSSE()) {
-            caps.emplace_back("SSE");
-        }
-        if (SDL_HasSSE2()) {
-            caps.emplace_back("SSE2");
-        }
-        if (SDL_HasSSE3()) {
-            caps.emplace_back("SSE3");
-        }
-        if (SDL_HasSSE41()) {
-            caps.emplace_back("SSE41");
-        }
-        if (SDL_HasSSE42()) {
-            caps.emplace_back("SSE42");
-        }
-        for (int i = 0; i < caps.size(); i++) {
-            if (i % 4 == 0 && i != 0) {
-                ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", caps[i]);
-            }
-            else {
-                ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", caps[i]);
-                ImGui::SameLine();
-            }
-        }
-        ImGui::Separator();
-        //-------------------------------
-        SDL_GetCurrentVideoDriver();
-        ImGui::Text("GPU:");
-        ImGui::SameLine();
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", SDL_GetCurrentVideoDriver()); //TODO falta la gpu
-    }
-
-    ImGui::SetItemDefaultFocus();
-    ImGui::End();
-}
-
-void ModuleEditor::DrawAbout(const char* title, bool& p_open)
-{
-    ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_Always);
-    if (!ImGui::Begin(title, &p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    
-    ImGui::Text("Engine Name:");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Deus Ex Machina");
-    
-    ImGui::Text("Description:");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "With <3 by Pablo Cebollada Hernandez.");
-    
-    ImGui::Text("Author:");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Pablo Cebollada Hernandez");
-    
-    ImGui::Text("Libraries:");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "glew 2.1.0,");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SDL2,");
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "DirectXTex October 2022 version,");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MathGeoLib &");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui.");
-
-    ImGui::Text("License:");
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MIT License.");
-
-    
-
-    ImGui::SetItemDefaultFocus();
-    ImGui::End();
+    return miliLogs;
 }
