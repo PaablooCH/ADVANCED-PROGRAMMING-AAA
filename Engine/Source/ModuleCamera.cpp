@@ -5,13 +5,13 @@
 #include "ModuleRenderExercise.h"
 #include "Application.h"
 #include "MathGeoLib/Math/float3x3.h"
-#include "MathGeoLib/Math/float4x4.h"
 #include "MathGeoLib/Math/Quat.h"
 
 ModuleCamera::ModuleCamera()
 {
     frustum = new Frustum();
     rotateOption = false;
+    speed = 10.f;
 }
 
 bool ModuleCamera::Init()
@@ -20,7 +20,6 @@ bool ModuleCamera::Init()
     frustum->SetFrame(float3(0, 2, 8), -float3::unitZ, float3::unitY);
     frustum->SetViewPlaneDistances(0.1f, 100.0f);
     frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * 90, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
-    speed = 10.f;
     return true;
 }
 

@@ -10,7 +10,6 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleTexture.h"
 #include "ModuleTimer.h"
-#include "MathGeoLib/Time/Clock.h"
 
 using namespace std;
 
@@ -26,8 +25,7 @@ Application::Application()
 	modules.push_back(texture = new ModuleTexture());
 	modules.push_back(exercise = new ModuleRenderExercise());
 	modules.push_back(debugdraw = new ModuleDebugDraw());
-	modules.push_back(renderer = new ModuleRender()); //TODO mover cosas al start eliminar CRTSecure Warnings too
-
+	modules.push_back(renderer = new ModuleRender());
 }
 
 Application::~Application()

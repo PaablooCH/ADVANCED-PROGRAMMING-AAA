@@ -1,29 +1,29 @@
 #include "ModuleTexture.h"
 #include "Application.h"
 #include "ModuleEditor.h"
-
+#include "DirectXTex/DirectXTex.h"
 
 void ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
 {
-	ScratchImage scratchImage;
+	DirectX::ScratchImage scratchImage;
 	const size_t cSize = strlen(nameTexture) + 1;
 	wchar_t* wc = new wchar_t[cSize];
 	mbstowcs(wc, nameTexture, cSize);
 
-	long success = LoadFromDDSFile(wc, DDS_FLAGS_NONE, NULL, scratchImage);
+	long success = LoadFromDDSFile(wc, DirectX::DDS_FLAGS_NONE, NULL, scratchImage);
     if (success < 0) {
         success = LoadFromTGAFile(wc, NULL, scratchImage);
         if (success < 0) {
-            LoadFromWICFile(wc, WIC_FLAGS_NONE, NULL, scratchImage);
+            LoadFromWICFile(wc, DirectX::WIC_FLAGS_NONE, NULL, scratchImage);
         }
     }
     
 	App->editor->logs.emplace_back("Texture loaded");
 
 	GLuint tbo;
-	ScratchImage flipped;
-	FlipRotate(scratchImage.GetImages(), scratchImage.GetImageCount(), scratchImage.GetMetadata(), TEX_FR_FLIP_VERTICAL, flipped);
-	const Image* image = flipped.GetImage(0, 0, 0);
+	DirectX::ScratchImage flipped;
+	FlipRotate(scratchImage.GetImages(), scratchImage.GetImageCount(), scratchImage.GetMetadata(), DirectX::TEX_FR_FLIP_VERTICAL, flipped);
+	const DirectX::Image* image = flipped.GetImage(0, 0, 0);
 	glGenTextures(1, &tbo);
 	glBindTexture(GL_TEXTURE_2D, tbo);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -31,7 +31,7 @@ void ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	TexMetadata metadata = flipped.GetMetadata();
+	DirectX::TexMetadata metadata = flipped.GetMetadata();
 	int internalFormat, format, type;
 	switch (metadata.format)
 	{

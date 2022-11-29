@@ -1,10 +1,6 @@
 ﻿#include "ModuleRenderExercise.h"
 #include "Application.h"
 #include "Globals.h"
-#include "ModuleTexture.h"
-#include "ModuleProgram.h"
-#include "ModuleCamera.h"
-#include "GL/glew.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
 {

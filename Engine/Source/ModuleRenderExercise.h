@@ -1,8 +1,6 @@
 #pragma once
 #include "Module.h"
 #include "Model.h"
-#include "DirectXTex/DirectXTex.h"
-using namespace DirectX;
 
 class ModuleRenderExercise : public Module
 {

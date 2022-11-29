@@ -1,10 +1,7 @@
 #pragma once
 #include "Module.h"
-#include "DirectXTex/DirectXTex.h"
 #include "GL/glew.h"
 #include <string>
-
-using namespace DirectX;
 
 struct InfoTexture
 {

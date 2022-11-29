@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "GL/glew.h"
-#include <stdio.h>
 
 ModuleProgram::ModuleProgram()
 {
