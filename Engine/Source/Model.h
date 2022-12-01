@@ -14,6 +14,14 @@ public:
 	void Draw();
 
 	float3 GetCenter() const;
+	inline float3 GetMaxPoints()
+	{
+		return maxPoint;
+	}
+	inline float3 GetMinPoints()
+	{
+		return minPoint;
+	}
 
 private:
 	void LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials);

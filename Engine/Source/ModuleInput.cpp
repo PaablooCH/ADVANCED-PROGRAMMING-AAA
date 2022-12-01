@@ -189,6 +189,9 @@ update_status ModuleInput::Update()
             App->camera->GoUpDown(-1.f);
         }
     }
+    if (keyboard[SDL_SCANCODE_F]) {
+        App->camera->LookObject();
+    }
     if (keyboard[SDL_SCANCODE_UP]) {
         App->camera->RotationCamera(0.f, 5.f);
     }

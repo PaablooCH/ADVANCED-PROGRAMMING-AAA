@@ -52,6 +52,10 @@ float3 Model::GetCenter() const
 		minPoint.z + (maxPoint.z - minPoint.z) / 2.0f);
 }
 
+
+
+
+
 void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials)
 {
 	aiString file;

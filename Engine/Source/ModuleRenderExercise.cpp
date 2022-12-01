@@ -16,7 +16,7 @@ bool ModuleRenderExercise::Init()
 
 bool ModuleRenderExercise::Start()
 {
-	model = new Model("Bakerhouse.fbx");
+	model = new Model("Models/Bakerhouse.fbx");
 	return true;
 }
 

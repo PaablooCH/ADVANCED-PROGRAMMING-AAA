@@ -113,6 +113,20 @@ void ModuleCamera::OrbitObject(const float&& multiplierX, const float&& multipli
     LookAt(centerObject);
 }
 
+void ModuleCamera::LookObject()
+{
+    float3 center = App->exercise->GetModel()->GetCenter();
+    float3 minPoints = App->exercise->GetModel()->GetMinPoints();
+    float3 maxPoints = App->exercise->GetModel()->GetMaxPoints();
+
+    float3 pos = center;
+    pos.z = pos.z + 2.5*minPoints.z;
+    pos.y = pos.y + 2*maxPoints.y;
+    pos.x = pos.x + 2*maxPoints.x;
+    frustum->SetPos(pos);
+    LookAt(center);
+}
+
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)
 {
     App->editor->logs.emplace_back("Aspect Ratio changed");
@@ -134,7 +148,7 @@ void ModuleCamera::Orientation(const vec& up)
     frustum->SetUp(up);
 }
 
-void ModuleCamera::LookAt(float3 lookAt)
+void ModuleCamera::LookAt(const float3& lookAt)
 {
     float3 direction = lookAt - frustum->Pos();
     // localForward, targetDirection, localUp, worldUp

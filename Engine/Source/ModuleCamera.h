@@ -20,15 +20,16 @@ public:
 	void GoUpDown(const float&& multiplier);
 	void RotationCamera(const float&& multiplierX, const float&& multiplierY);
 	void OrbitObject(const float&& multiplierX, const float&& multiplierY);
+	void LookObject();
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);
 	void Position(const vec& pos);
 	void Orientation(const vec& up);
-	void LookAt(float3 lookAt);
-	inline float4x4 ProjectionMatrix() {
+	void LookAt(const float3& lookAt);
+	inline const float4x4& ProjectionMatrix() {
 		return proj;
 	}
-	inline float4x4 GetViewMatrix() {
+	inline const float4x4& GetViewMatrix() {
 		return view;
 	}
 
