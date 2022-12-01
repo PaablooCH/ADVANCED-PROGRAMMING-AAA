@@ -3,6 +3,7 @@
 #include "PanelConsole.h"
 #include "PanelConfig.h"
 #include "PanelAbout.h"
+#include "PanelDragAndDrop.h"
 #include "PanelLog.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -47,6 +48,7 @@ bool ModuleEditor::Start()
     panels.push_back(new PanelConsole("Console"));
     panels.push_back(new PanelConfig("Configuration"));
     panels.push_back(new PanelAbout("About"));
+    panels.push_back(new PanelDragAndDrop("DragAndDrop"));
 
     return true;
 }
@@ -74,17 +76,6 @@ update_status ModuleEditor::Update()
 
     for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it) {
         (*it)->Draw();
-    }
-    
-    const char* path;
-    if (ImGui::BeginDragDropTarget())
-    {
-        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILES"))
-        {
-            path =((const char*)payload->Data);
-            logs.emplace_back(path);
-        }
-        ImGui::EndDragDropTarget();
     }
 
     //ImGui::ShowDemoWindow(); //TODO eliminarlo al final

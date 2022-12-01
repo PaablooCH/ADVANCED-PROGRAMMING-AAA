@@ -2,8 +2,6 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "imgui.h"
-#include "imgui_impl_sdl.h"
-#include "imgui_impl_opengl3.h"
 
 PanelAbout::PanelAbout(const char* title) : Panel(title)
 {

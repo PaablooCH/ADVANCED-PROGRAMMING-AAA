@@ -15,6 +15,8 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
+	void DropFile(const char* pathFile);
+
 	inline Model* GetModel() {
 		return model;
 	}

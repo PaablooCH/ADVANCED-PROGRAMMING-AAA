@@ -62,9 +62,17 @@ void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMateri
 	{
 		if (aiMaterial[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file) == AI_SUCCESS)
 		{
+			std::string texturePath = std::string(file.data);
+			const size_t lastSlashIdx = texturePath.find_last_of("\\/");
+			if (std::string::npos != lastSlashIdx)
+			{
+				texturePath.erase(0, lastSlashIdx + 1);
+			}
+			texturePath = "Textures/" + texturePath;
+
 			LOG_ENGINE("Assimp: Loading the texture %i", i);
 			InfoTexture info;
-			App->texture->LoadTexture(file.data, info);
+			App->texture->LoadTexture(texturePath.c_str(), info);
 			materials.push_back(info);
 		}
 	}

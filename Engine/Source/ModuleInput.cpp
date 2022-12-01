@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
+#include "ModuleRenderExercise.h"
 #include "SDL.h"
 #include "imgui_impl_sdl.h"
 
@@ -128,6 +129,11 @@ update_status ModuleInput::Update()
                         App->camera->MoveFrontBack(-5.f);
                     }
                 }
+                break;
+
+            case SDL_DROPFILE:
+                App->editor->logs.emplace_back("File dropped");
+                App->exercise->DropFile(sdlEvent.drop.file);
                 break;
         }
     }

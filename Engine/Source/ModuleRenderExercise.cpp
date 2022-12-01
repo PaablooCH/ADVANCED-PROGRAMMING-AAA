@@ -1,5 +1,4 @@
 ﻿#include "ModuleRenderExercise.h"
-#include "Application.h"
 #include "Globals.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
@@ -41,4 +40,10 @@ bool ModuleRenderExercise::CleanUp()
 {
 	delete model;
 	return true;
+}
+
+void ModuleRenderExercise::DropFile(const char* pathFile)
+{
+	delete model;
+	model = new Model(pathFile);
 }
