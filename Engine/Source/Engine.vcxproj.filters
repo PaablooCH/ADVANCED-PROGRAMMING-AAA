@@ -205,6 +205,9 @@
     <ClCompile Include="PanelConsole.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="PanelDragAndDrop.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -523,6 +526,9 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="PanelAbout.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelDragAndDrop.h">
       <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>

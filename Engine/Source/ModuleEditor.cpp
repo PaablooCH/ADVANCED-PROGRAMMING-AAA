@@ -12,6 +12,7 @@
 #include "ModuleRender.h"
 #include "ModuleTimer.h"
 #include "GL/glew.h"
+#include <string>
 
 ModuleEditor::ModuleEditor()
 {
@@ -70,9 +71,22 @@ update_status ModuleEditor::PreUpdate()
 
 update_status ModuleEditor::Update()
 {
+
     for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it) {
         (*it)->Draw();
     }
+    
+    const char* path;
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("FILES"))
+        {
+            path =((const char*)payload->Data);
+            logs.emplace_back(path);
+        }
+        ImGui::EndDragDropTarget();
+    }
+
     //ImGui::ShowDemoWindow(); //TODO eliminarlo al final
     return UPDATE_CONTINUE;
 }
