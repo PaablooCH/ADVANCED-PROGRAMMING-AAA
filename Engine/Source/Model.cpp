@@ -10,16 +10,30 @@
 
 Model::Model(const char* fileName)
 {
+	std::string pathFile = std::string(fileName);
+	const size_t lastSlashIdx = pathFile.find_last_of("\\/");
+	if (std::string::npos != lastSlashIdx)
+	{
+		pathFile.erase(0, lastSlashIdx + 1);
+	}
+	// Remove extension if present.
+	const size_t periodIdx = pathFile.rfind('.');
+	bool extension = pathFile.substr(periodIdx) == ".fbx" ? true : false;
+	if (std::string::npos != periodIdx)
+	{
+		pathFile.erase(periodIdx);
+	}
+	name = pathFile.c_str();
 	const aiScene* scene = aiImportFile(fileName, aiProcessPreset_TargetRealtime_MaxQuality);
-	if (scene)
+	if (extension && scene)
 	{
 		LoadMaterials(scene->mMaterials, scene->mNumMaterials);
 		LoadMeshes(scene->mMeshes, scene->mNumMeshes);
 
 		modelMatrix = float4x4::identity;
-		for (int i = 0; i < meshes.size(); ++i) {
+		//for (int i = 0; i < meshes.size(); ++i) {
 
-		}
+		//}
 	}
 	else
 	{
@@ -51,10 +65,6 @@ float3 Model::GetCenter() const
 		minPoint.y + (maxPoint.y - minPoint.y) / 2.0f, 
 		minPoint.z + (maxPoint.z - minPoint.z) / 2.0f);
 }
-
-
-
-
 
 void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials)
 {

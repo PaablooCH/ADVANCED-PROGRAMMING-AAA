@@ -3,7 +3,7 @@
 #include "PanelConsole.h"
 #include "PanelConfig.h"
 #include "PanelAbout.h"
-#include "PanelDragAndDrop.h"
+#include "PanelModel.h"
 #include "PanelLog.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -48,7 +48,7 @@ bool ModuleEditor::Start()
     panels.push_back(new PanelConsole("Console"));
     panels.push_back(new PanelConfig("Configuration"));
     panels.push_back(new PanelAbout("About"));
-    panels.push_back(new PanelDragAndDrop("DragAndDrop"));
+    panels.push_back(new PanelModel("Model Information"));
 
     return true;
 }

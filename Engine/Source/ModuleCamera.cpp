@@ -120,7 +120,7 @@ void ModuleCamera::LookObject()
     float3 maxPoints = App->exercise->GetModel()->GetMaxPoints();
 
     float3 pos = center;
-    pos.z = pos.z + 2.5*minPoints.z;
+    pos.z = pos.z + 2.5f*minPoints.z;
     pos.y = pos.y + 2*maxPoints.y;
     pos.x = pos.x + 2*maxPoints.x;
     frustum->SetPos(pos);

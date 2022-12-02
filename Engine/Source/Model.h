@@ -14,18 +14,26 @@ public:
 	void Draw();
 
 	float3 GetCenter() const;
-	inline float3 GetMaxPoints()
+
+	inline const float3& GetMaxPoints()
 	{
 		return maxPoint;
 	}
-	inline float3 GetMinPoints()
+	inline const float3& GetMinPoints()
 	{
 		return minPoint;
+	}
+	inline const char* GetName()
+	{
+		return name;
 	}
 
 private:
 	void LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials);
 	void LoadMeshes(aiMesh** meshes, const unsigned int& numMeshes);
+	
+	const char* name;
+
 	std::vector<InfoTexture> materials;
 	std::vector<Mesh*> meshes;
 	float4x4 modelMatrix;
