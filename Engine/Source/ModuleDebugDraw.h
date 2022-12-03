@@ -21,7 +21,7 @@ public:
 	update_status   Update() override;
 	bool            CleanUp() override;
 
-    void            Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height);
+    void            Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height, float3 color);
 private:
 
     static DDRenderInterfaceCoreGL* implementation;

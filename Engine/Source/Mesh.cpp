@@ -23,7 +23,7 @@ void Mesh::Draw(const std::vector<InfoTexture>& modelTextures)
 {
 	unsigned program = App->renderer->GetProgram();
 	const float4x4& view = App->camera->GetViewMatrix();
-	const float4x4& proj = App->camera->ProjectionMatrix();
+	const float4x4& proj = App->camera->GetProjectionMatrix();
 	float4x4 model = float4x4::identity;
 	glUseProgram(program);
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);

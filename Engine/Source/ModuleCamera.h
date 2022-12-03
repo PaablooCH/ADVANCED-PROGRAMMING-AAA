@@ -29,7 +29,7 @@ public:
 	void Position(const vec& pos);
 	void Orientation(const vec& up);
 	void LookAt(const float3& lookAt);
-	inline const float4x4& ProjectionMatrix() {
+	inline const float4x4& GetProjectionMatrix() {
 		return proj;
 	}
 	inline const float4x4& GetViewMatrix() {

@@ -4,10 +4,12 @@
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
+#include "ModuleDebugDraw.h"
 #include "SDL.h"
 
 ModuleRender::ModuleRender()
 {
+	colorGrid = float3(0.501961f, 0.501961f, 0.501961f);
 }
 
 // Destructor
@@ -43,8 +45,6 @@ bool ModuleRender::Init()
 	glDisable(GL_STENCIL_TEST); // Not going to use stencil test for now
 	glFrontFace(GL_CCW); // Front faces will be counter clockwise
 
-	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
-
 	return true;
 }
 
@@ -60,6 +60,8 @@ update_status ModuleRender::PreUpdate()
 	SDL_GetWindowSize(App->window->window, &w, &h);
 	glViewport(0, 0, w, h);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(backgroundRGBA[0], backgroundRGBA[1], backgroundRGBA[2], backgroundRGBA[3]);
+	App->debugdraw->Draw(App->camera->GetViewMatrix(), App->camera->GetProjectionMatrix(), SCREEN_WIDTH, SCREEN_HEIGHT, colorGrid);
 	return UPDATE_CONTINUE;
 }
 

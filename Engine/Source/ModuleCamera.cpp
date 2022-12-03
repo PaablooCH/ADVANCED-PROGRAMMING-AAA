@@ -1,5 +1,4 @@
 #include "ModuleCamera.h"
-#include "ModuleDebugDraw.h"
 #include "ModuleEditor.h"
 #include "ModuleTimer.h"
 #include "ModuleRenderExercise.h"
@@ -32,8 +31,6 @@ update_status ModuleCamera::Update()
 {
     view = frustum->ViewMatrix();
     proj = frustum->ProjectionMatrix();
-
-    App->debugdraw->Draw(view, proj, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     return UPDATE_CONTINUE;
 }
@@ -120,9 +117,9 @@ void ModuleCamera::PosCameraViewObject(Model* model)
     float3 maxPoints = model->GetMaxPoints();
 
     float3 pos = center;
-    pos.z = minPoints.z;
-    pos.y = pos.y;
-    pos.x = pos.x;
+    pos.z = center.z + minPoints.z - 1;
+    pos.y = center.y + maxPoints.y + 1;
+    pos.x = center.x + maxPoints.x + 1;
     frustum->SetPos(pos);
     LookAt(center);
 }

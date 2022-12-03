@@ -619,13 +619,13 @@ update_status  ModuleDebugDraw::Update()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleDebugDraw::Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height)
+void ModuleDebugDraw::Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height, float3 color)
 {
     implementation->width     = width;
     implementation->height    = height;
     implementation->mvpMatrix = proj * view;
     dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
-    dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, dd::colors::Gray);
+    dd::xzSquareGrid(-10, 10, 0.0f, 1.0f, color);
     dd::flush();
 }
 
