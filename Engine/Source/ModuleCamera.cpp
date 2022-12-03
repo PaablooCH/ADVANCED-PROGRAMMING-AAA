@@ -2,6 +2,7 @@
 #include "ModuleEditor.h"
 #include "ModuleTimer.h"
 #include "ModuleRenderExercise.h"
+#include "Model.h"
 #include "Application.h"
 #include "MathGeoLib/Math/float3x3.h"
 #include "MathGeoLib/Math/Quat.h"
@@ -116,7 +117,7 @@ void ModuleCamera::PosCameraViewObject(Model* model)
     float3 minPoints = model->GetMinPoints();
     float3 maxPoints = model->GetMaxPoints();
 
-    float3 pos = center;
+    float3 pos;
     pos.z = center.z + minPoints.z - 1;
     pos.y = center.y + maxPoints.y + 1;
     pos.x = center.x + maxPoints.x + 1;

@@ -1,11 +1,13 @@
 #pragma once
-#include "Mesh.h"
 #include "ModuleTexture.h"
-#include <vector>
-#include <string>
 #include "GL/glew.h"
-#include "assimp/material.h"
 #include "MathGeoLib/Math/float4x4.h"
+
+struct aiMaterial;
+struct aiMesh;
+class Mesh;
+class string;
+class vector;
 
 class Model
 {

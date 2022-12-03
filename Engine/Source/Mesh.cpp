@@ -49,9 +49,22 @@ void Mesh::LoadVBO(const aiMesh* mesh)
 	unsigned uv_offset = position_size;
 	unsigned uv_size = sizeof(float) * 2 * mesh->mNumVertices;
 	float2* uvs = (float2*)(glMapBufferRange(GL_ARRAY_BUFFER, uv_offset, uv_size, GL_MAP_WRITE_BIT));
+
+	min = float3(mesh->mVertices[0].x, mesh->mVertices[0].y, mesh->mVertices[0].z);
+	max = float3(mesh->mVertices[0].x, mesh->mVertices[0].y, mesh->mVertices[0].z);
+
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i)
 	{
 		uvs[i] = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
+
+		if (mesh->mVertices[i].x > max.x) max.x = mesh->mVertices[i].x;
+		if (mesh->mVertices[i].x < min.x) min.x = mesh->mVertices[i].x;
+
+		if (mesh->mVertices[i].y > max.y) max.y = mesh->mVertices[i].y;
+		if (mesh->mVertices[i].y < min.y) min.y = mesh->mVertices[i].y;
+
+		if (mesh->mVertices[i].z > max.z) max.z = mesh->mVertices[i].z;
+		if (mesh->mVertices[i].z < min.z) min.z = mesh->mVertices[i].z;
 	}
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	numVertices = mesh->mNumVertices;
@@ -65,20 +78,8 @@ void Mesh::LoadEBO(const aiMesh* mesh)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, nullptr, GL_STATIC_DRAW);
 	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY));
 
-	min = float3(mesh->mVertices[0].x, mesh->mVertices[0].y, mesh->mVertices[0].z);
-	max = float3(mesh->mVertices[0].x, mesh->mVertices[0].y, mesh->mVertices[0].z);
-
 	for (unsigned i = 0; i < mesh->mNumFaces; ++i)
 	{
-		if (mesh->mVertices[i].x > max.x) max.x = mesh->mVertices[i].x;
-		if (mesh->mVertices[i].x < min.x) min.x = mesh->mVertices[i].x;
-		
-		if (mesh->mVertices[i].y > max.y) max.y = mesh->mVertices[i].y;
-		if (mesh->mVertices[i].y < min.y) min.y = mesh->mVertices[i].y;
-
-		if (mesh->mVertices[i].z > max.z) max.z = mesh->mVertices[i].z;
-		if (mesh->mVertices[i].z < min.z) min.z = mesh->mVertices[i].z;
-
 		assert(mesh->mFaces[i].mNumIndices == 3); // note: assume triangles = 3 indices per face
 		*(indices++) = mesh->mFaces[i].mIndices[0];
 		*(indices++) = mesh->mFaces[i].mIndices[1];

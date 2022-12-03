@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
-#include "Model.h"
+
+class Model;
 
 class ModuleRenderExercise : public Module
 {

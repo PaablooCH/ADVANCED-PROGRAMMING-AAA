@@ -1,5 +1,6 @@
 ﻿#include "ModuleRenderExercise.h"
 #include "Globals.h"
+#include "Model.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
 {

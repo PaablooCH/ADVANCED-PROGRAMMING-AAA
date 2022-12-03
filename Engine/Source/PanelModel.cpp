@@ -1,6 +1,8 @@
 #include "PanelModel.h"
 #include "Application.h"
 #include "ModuleRenderExercise.h"
+#include "Model.h"
+#include "Mesh.h"
 #include "ModuleEditor.h"
 #include "imgui.h"
 
