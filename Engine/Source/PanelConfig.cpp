@@ -27,7 +27,6 @@ bool PanelConfig::Draw()
         ImGui::PlotHistogram("##framerate", &fpsLogs[0], fpsLogs.size(), 0, title, 0.0f, 200.0f, ImVec2(310.0f, 100.0f));
         sprintf_s(title, 25, "Milliseconds %.1f", miliLogs[miliLogs.size() - 1]);
         ImGui::PlotHistogram("##milliseconds", &miliLogs[0], miliLogs.size(), 0, title, 0.0f, 40.0f, ImVec2(310.0f, 100.0f));
-        ImGui::Separator();
     }
     if (ImGui::CollapsingHeader("Window"))
     {

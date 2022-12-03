@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleTexture.h"
 #include "ModuleEditor.h"
+#include "ModuleCamera.h"
 #include "Globals.h"
 #include "assimp/ai_assert.h"
 #include "assimp/scene.h"
@@ -19,11 +20,6 @@ Model::Model(const char* fileName)
 	// Remove extension if present.
 	const size_t periodIdx = pathFile.rfind('.');
 	bool extension = pathFile.substr(periodIdx) == ".fbx" ? true : false;
-	if (std::string::npos != periodIdx)
-	{
-		pathFile.erase(periodIdx);
-	}
-	name = pathFile.c_str();
 	const aiScene* scene = aiImportFile(fileName, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (extension && scene)
 	{
@@ -34,6 +30,14 @@ Model::Model(const char* fileName)
 		//for (int i = 0; i < meshes.size(); ++i) {
 
 		//}
+
+		//Get name model
+		if (std::string::npos != periodIdx)
+		{
+			pathFile.erase(periodIdx);
+		}
+		name = pathFile;
+		App->camera->PosCameraViewObject(this);
 	}
 	else
 	{
@@ -57,13 +61,6 @@ void Model::Draw()
 	for (int i = 0; i < meshes.size(); i++) {
 		meshes[i]->Draw(materials);
 	}
-}
-
-float3 Model::GetCenter() const
-{
-	return float3(minPoint.x + (maxPoint.x - minPoint.x) / 2.0f, //TODO Aplicar Transformaciones del objeto
-		minPoint.y + (maxPoint.y - minPoint.y) / 2.0f, 
-		minPoint.z + (maxPoint.z - minPoint.z) / 2.0f);
 }
 
 void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials)
@@ -116,4 +113,12 @@ void Model::LoadMeshes(aiMesh** aiMesh, const unsigned int& numMeshes)
 		if (maxPoint.z < meshes[i]->max.z) maxPoint.z = meshes[i]->max.z;
 		if (minPoint.z > meshes[i]->min.z) minPoint.z = meshes[i]->min.z;
 	}
+	CalculateCenter();
+}
+
+void Model::CalculateCenter()
+{
+	center = float3(minPoint.x + (maxPoint.x - minPoint.x) / 2.0f, //TODO Aplicar Transformaciones del objeto
+		minPoint.y + (maxPoint.y - minPoint.y) / 2.0f,
+		minPoint.z + (maxPoint.z - minPoint.z) / 2.0f);
 }

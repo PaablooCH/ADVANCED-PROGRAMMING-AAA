@@ -2,7 +2,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleEditor.h"
-#include "GL/glew.h"
 
 ModuleProgram::ModuleProgram()
 {

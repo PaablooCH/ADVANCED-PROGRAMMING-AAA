@@ -8,7 +8,7 @@ Mesh::Mesh(const aiMesh* mesh)
 {
 	LoadVBO(mesh);
 	LoadEBO(mesh);
-	materialIindex = mesh->mMaterialIndex;
+	materialIndex = mesh->mMaterialIndex;
 	CreateVAO();
 }
 
@@ -30,7 +30,7 @@ void Mesh::Draw(const std::vector<InfoTexture>& modelTextures)
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, modelTextures[materialIindex].id);
+	glBindTexture(GL_TEXTURE_2D, modelTextures[materialIndex].id);
 	glUniform1i(glGetUniformLocation(program, "mytexture"), 0);
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);

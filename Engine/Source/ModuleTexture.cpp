@@ -58,5 +58,19 @@ void ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, metadata.width, metadata.height, 0, format, type, image->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	info.id = tbo;
-	info.path = nameTexture;
+
+	//Extract Texture name
+	std::string pathFile = std::string(nameTexture);
+	const size_t lastSlashIdx = pathFile.find_last_of("\\/");
+	if (std::string::npos != lastSlashIdx)
+	{
+		pathFile.erase(0, lastSlashIdx + 1);
+	}
+	// Remove extension if present.
+	const size_t periodIdx = pathFile.rfind('.');
+	if (std::string::npos != periodIdx)
+	{
+		pathFile.erase(periodIdx);
+	}
+	info.path = pathFile;
 }

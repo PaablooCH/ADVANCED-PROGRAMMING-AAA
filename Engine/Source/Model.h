@@ -2,6 +2,7 @@
 #include "Mesh.h"
 #include "ModuleTexture.h"
 #include <vector>
+#include <string>
 #include "GL/glew.h"
 #include "assimp/material.h"
 #include "MathGeoLib/Math/float4x4.h"
@@ -13,8 +14,14 @@ public:
 	~Model();
 	void Draw();
 
-	float3 GetCenter() const;
-
+	inline const std::vector<InfoTexture>& GetMaterials()
+	{
+		return materials;
+	}
+	inline const std::vector<Mesh*>& GetMeshes()
+	{
+		return meshes;
+	}
 	inline const float3& GetMaxPoints()
 	{
 		return maxPoint;
@@ -23,7 +30,11 @@ public:
 	{
 		return minPoint;
 	}
-	inline const char* GetName()
+	inline const float3& GetCenter()
+	{
+		return center;
+	}
+	inline const std::string& GetName ()
 	{
 		return name;
 	}
@@ -31,8 +42,9 @@ public:
 private:
 	void LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials);
 	void LoadMeshes(aiMesh** meshes, const unsigned int& numMeshes);
+	void CalculateCenter();
 	
-	const char* name;
+	std::string name;
 
 	std::vector<InfoTexture> materials;
 	std::vector<Mesh*> meshes;
@@ -40,5 +52,6 @@ private:
 
 	float3 maxPoint;
 	float3 minPoint;
+	float3 center;
 };
 

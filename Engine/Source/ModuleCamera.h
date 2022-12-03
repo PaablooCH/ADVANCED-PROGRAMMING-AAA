@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "MathGeoLib/Geometry/Frustum.h"
 
+class Model;
+
 class ModuleCamera :
     public Module
 {
@@ -20,6 +22,7 @@ public:
 	void GoUpDown(const float&& multiplier);
 	void RotationCamera(const float&& multiplierX, const float&& multiplierY);
 	void OrbitObject(const float&& multiplierX, const float&& multiplierY);
+	void PosCameraViewObject(Model* model);
 	void LookObject();
 	void SetAspectRatio(const float& w, const float& h);
 	void SetPlaneDistances(const float& near, const float& far);

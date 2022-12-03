@@ -11,6 +11,15 @@ public:
 	~Mesh();
 	void Draw(const std::vector<InfoTexture>& model_textures);
 
+	inline const int& GetNumVertices() {
+		return numVertices;
+	}
+	inline const int& GetNumIndices() {
+		return numVertices;
+	}
+	inline const int& GetMaterialIndex() {
+		return materialIndex;
+	}
 	float3 max;
 	float3 min;
 	
@@ -24,6 +33,6 @@ private:
 	GLuint vao;
 	int numVertices;
 	int numIndices;
-	int materialIindex;
+	int materialIndex;
 };
 

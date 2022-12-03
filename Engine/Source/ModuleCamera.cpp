@@ -71,14 +71,14 @@ void ModuleCamera::GoUpDown(const float&& multiplier)
 
 void ModuleCamera::RotationCamera(const float&& multiplierX, const float&& multiplierY)
 {
-    Quat rotationX = Quat(frustum->Up(), multiplierX * speed * App->timer->deltaTime * DEGTORAD);
-    Quat rotationY = Quat::RotateX(multiplierY * speed * App->timer->deltaTime * DEGTORAD);
+    Quat rotationX = Quat(float3::unitY, multiplierX * speed * App->timer->deltaTime * DEGTORAD);
+    Quat rotationY = Quat(frustum->WorldMatrix().WorldX(), multiplierY * speed * App->timer->deltaTime * DEGTORAD);
 
-    float3 up = rotationX.Transform(frustum->Up());
-    up = rotationY.Transform(up);
+    float3 up = rotationY.Transform(frustum->Up().Normalized());
+    up = rotationX.Transform(up);
 
-    float3 front = rotationX.Transform(frustum->Front());
-    front = rotationY.Transform(front);
+    float3 front = rotationY.Transform(frustum->Front().Normalized());
+    front = rotationX.Transform(front);
 
     frustum->SetFront(front);
     frustum->SetUp(up);
@@ -113,18 +113,23 @@ void ModuleCamera::OrbitObject(const float&& multiplierX, const float&& multipli
     LookAt(centerObject);
 }
 
-void ModuleCamera::LookObject()
+void ModuleCamera::PosCameraViewObject(Model* model)
 {
-    float3 center = App->exercise->GetModel()->GetCenter();
-    float3 minPoints = App->exercise->GetModel()->GetMinPoints();
-    float3 maxPoints = App->exercise->GetModel()->GetMaxPoints();
+    float3 center = model->GetCenter();
+    float3 minPoints = model->GetMinPoints();
+    float3 maxPoints = model->GetMaxPoints();
 
     float3 pos = center;
-    pos.z = pos.z + 2.5f*minPoints.z;
-    pos.y = pos.y + 2*maxPoints.y;
-    pos.x = pos.x + 2*maxPoints.x;
+    pos.z = minPoints.z;
+    pos.y = pos.y;
+    pos.x = pos.x;
     frustum->SetPos(pos);
     LookAt(center);
+}
+
+void ModuleCamera::LookObject()
+{
+    LookAt(App->exercise->GetModel()->GetCenter());
 }
 
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)

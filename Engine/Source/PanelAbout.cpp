@@ -35,9 +35,11 @@ bool PanelAbout::Draw()
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "SDL2,");
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "DirectXTex October 2022 version,");
     ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MathGeoLib &");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MathGeoLib,");
     ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui.");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui &");
+    ImGui::SameLine();
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Assimp.");
 
     ImGui::Text("License:");
     ImGui::SameLine();
