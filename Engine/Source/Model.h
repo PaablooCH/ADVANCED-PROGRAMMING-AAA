@@ -46,7 +46,7 @@ public:
 	}
 
 private:
-	void LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials);
+	void LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials, const char* pathFbx);
 	void LoadMeshes(aiMesh** meshes, const unsigned int& numMeshes);
 	void CalculateCenter();
 	

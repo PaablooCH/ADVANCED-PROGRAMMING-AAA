@@ -10,10 +10,11 @@
 #include "assimp/cimport.h"
 #include "assimp/postprocess.h"
 
-Model::Model(const char* fileName)
+Model::Model(const char* file)
 {
-	std::string pathFile = std::string(fileName);
+	std::string pathFile = std::string(file);
 	const size_t lastSlashIdx = pathFile.find_last_of("\\/");
+	std::string relativePath = pathFile.substr(0, lastSlashIdx + 1);
 	if (std::string::npos != lastSlashIdx)
 	{
 		pathFile.erase(0, lastSlashIdx + 1);
@@ -21,10 +22,10 @@ Model::Model(const char* fileName)
 	// Remove extension if present.
 	const size_t periodIdx = pathFile.rfind('.');
 	bool extension = pathFile.substr(periodIdx) == ".fbx" ? true : false;
-	const aiScene* scene = aiImportFile(fileName, aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
 	if (extension && scene)
 	{
-		LoadMaterials(scene->mMaterials, scene->mNumMaterials);
+		LoadMaterials(scene->mMaterials, scene->mNumMaterials, relativePath.c_str());
 		LoadMeshes(scene->mMeshes, scene->mNumMeshes);
 
 		modelMatrix = float4x4::identity;
@@ -32,14 +33,14 @@ Model::Model(const char* fileName)
 		//Get name model
 		if (std::string::npos != periodIdx)
 		{
-			pathFile.erase(periodIdx);
+			pathFile.erase(periodIdx); //Get name
 		}
 		name = pathFile;
 		App->camera->PosCameraViewObject(this);
 	}
 	else
 	{
-		LOG_ENGINE("Error loading %s: %s", fileName, aiGetErrorString());
+		LOG_ENGINE("Error loading %s: %s", file, aiGetErrorString());
 	}
 }
 
@@ -61,7 +62,7 @@ void Model::Draw()
 	}
 }
 
-void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials)
+void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials, const char* pathFbx)
 {
 	aiString file;
 	materials.reserve(numMaterials);
@@ -71,16 +72,25 @@ void Model::LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMateri
 	{
 		if (aiMaterial[i]->GetTexture(aiTextureType_DIFFUSE, 0, &file) == AI_SUCCESS)
 		{
-			std::string texturePath = std::string(file.data);
-			const size_t lastSlashIdx = texturePath.find_last_of("\\/");
+			InfoTexture info;
+			LOG_ENGINE("Assimp: Loading the texture %i", i);
+			std::string nameTexture = std::string(file.data);
+			if (App->texture->LoadTexture(nameTexture.c_str(), info)) {
+				materials.push_back(info);
+				continue;
+			}
+			const size_t lastSlashIdx = nameTexture.find_last_of("\\/");
 			if (std::string::npos != lastSlashIdx)
 			{
-				texturePath.erase(0, lastSlashIdx + 1);
+				nameTexture.erase(0, lastSlashIdx + 1);
 			}
-			texturePath = "Textures/" + texturePath;
-
-			LOG_ENGINE("Assimp: Loading the texture %i", i);
-			InfoTexture info;
+			std::string  texturePath = pathFbx + nameTexture;
+			if (App->texture->LoadTexture(texturePath.c_str(), info)) {
+				materials.push_back(info);
+				continue;
+			}
+			texturePath = "Textures/" + nameTexture;
+			
 			App->texture->LoadTexture(texturePath.c_str(), info);
 			materials.push_back(info);
 		}
@@ -97,6 +107,7 @@ void Model::LoadMeshes(aiMesh** aiMesh, const unsigned int& numMeshes)
 		LOG_ENGINE("Assimp: Loading the mesh %i", i);
 		meshes[i] = new Mesh(aiMesh[i]);
 	}
+	App->editor->logs.emplace_back("Meshes loaded.");
 
 	minPoint = meshes[0]->min;
 	maxPoint = meshes[0]->max;
