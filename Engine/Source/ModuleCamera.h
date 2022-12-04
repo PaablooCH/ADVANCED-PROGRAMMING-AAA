@@ -25,7 +25,7 @@ public:
 	void PosCameraViewObject(Model* model);
 	void LookObject();
 	void SetAspectRatio(const float& w, const float& h);
-	void SetPlaneDistances(const float& nearPlane, const float& farPlane);
+	void SetPlaneDistances(const float& n, const float& f);
 	void Orientation(const vec& up);
 	void LookAt(const float3& lookAt);
 	inline const float4x4& GetProjectionMatrix() {
@@ -37,19 +37,31 @@ public:
 	inline float& GetSpeed() {
 		return speed;
 	}
-	inline void SetSpeed(float s) {
+	inline void SetSpeed(const float& s) {
 		speed = s;
+	}
+	inline float& GetFarPlane() {
+		return farPlane;
+	}
+	inline void SetFarPlane(const float& farP) {
+		farPlane = farP;
+	}
+	inline float& GetNearPlane() {
+		return nearPlane;
+	}
+	inline void SetNearPlane(const float& nearP) {
+		nearPlane = nearP;
 	}
 	inline bool& GetRotationOption() {
 		return rotateOption;
 	}
-	inline void SetRotateOption(bool option) {
+	inline void SetRotateOption(const bool& option) {
 		rotateOption = option;
 	}
 
 private:
 	Frustum* frustum;
-	float speed;
+	float speed, nearPlane, farPlane;
 	bool rotateOption; //True -> arround an object, false -> her axis
 
 	float4x4 proj;

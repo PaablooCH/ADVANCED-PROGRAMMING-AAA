@@ -22,7 +22,7 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
-	void WindowResized(unsigned width, unsigned height);
+	void WindowResized(unsigned&& width, unsigned&& height);
 	void DropFile(const char* pathFile);
 
 	inline Model* GetModel() {
@@ -34,7 +34,7 @@ public:
 	inline float3& GetColorGrid() {
 		return colorGrid;
 	}
-	inline void SetColorGrid(float3 color) {
+	inline void SetColorGrid(float3&& color) {
 		colorGrid = color;
 	}
 

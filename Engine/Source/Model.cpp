@@ -38,6 +38,9 @@ Model::Model(const char* file)
 		name = pathFile;
 		App->camera->PosCameraViewObject(this);
 	}
+	else if (!extension) {
+		App->editor->logs.emplace_back("Extension File not supported. Only supported fbx extension.");
+	}
 	else
 	{
 		LOG_ENGINE("Error loading %s: %s", file, aiGetErrorString());

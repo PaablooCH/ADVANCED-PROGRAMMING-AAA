@@ -10,11 +10,13 @@ PanelAbout::PanelAbout(const char* title) : Panel(title)
 bool PanelAbout::Draw()
 {
     if (!open) {
+        focus = false;
         return false;
     }
-    ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(450, 400), ImGuiCond_Once);
     if (!ImGui::Begin(title, &open))
     {
+        focus = false;
         ImGui::End();
         return false;
     }
@@ -40,13 +42,16 @@ bool PanelAbout::Draw()
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MathGeoLib,");
     ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui &");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "ImGui,");
     ImGui::SameLine();
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Assimp.");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Assimp &");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "DirectX.");
 
     ImGui::Text("License:");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "MIT License.");
+
+    focus = ImGui::IsWindowFocused();
 
     ImGui::End();
     return false;

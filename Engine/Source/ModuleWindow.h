@@ -21,23 +21,37 @@ public:
 	// Called before quitting
 	bool CleanUp() override;
 
-	void SetFullScreen(bool fullScreen);
-	void SetBorderless(bool borderless);
-	void SetResizable(bool resizable);
-	void SetBrightness(float brightness);
-	void SetWidht(int w);
-	void SetHeight(int h);
+	void SetFullScreen(bool& fullScreen);
+	void SetBorderless(bool& borderless);
+	void SetResizable(bool& resizable);
+	void SetBrightness(float& brightness);
+	void SetWidht(int& w);
+	void SetHeight(int& h);
 
 	float GetBrightness();
 
-	int width, height, maxWidht, maxHeight;
-
-public:
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
+	
+	inline int& GetWidht() {
+		return width;
+	}
+	inline int& GetMaxWidht() {
+		return maxWidht;
+	}
+	inline int& GetHeight() {
+		return height;
+	}
+	inline int& GetMaxHeight() {
+		return maxHeight;
+	}
+
+private:
+	int width, height, maxWidht, maxHeight;
+
 };
 
 #endif // __ModuleWindow_H__

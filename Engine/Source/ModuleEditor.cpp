@@ -66,7 +66,7 @@ update_status ModuleEditor::PreUpdate()
         miliLogs.erase(miliLogs.begin());
     }
     fpsLogs.emplace_back(ImGui::GetIO().Framerate);
-    miliLogs.emplace_back(App->timer->miliseconds);
+    miliLogs.emplace_back(App->timer->GetMili());
 
     return UPDATE_CONTINUE;
 }
@@ -112,14 +112,12 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
-std::vector<float> ModuleEditor::GetFps()
+bool ModuleEditor::FocusPanels()
 {
-    return fpsLogs;
-}
-
-std::vector<float> ModuleEditor::GetMili()
-{
-    return miliLogs;
+    for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it) {
+        if ((*it)->GetFocus()) { return true; }
+    }
+    return false;
 }
 
 bool ModuleEditor::DrawMainMenu()
@@ -136,17 +134,17 @@ bool ModuleEditor::DrawMainMenu()
 
         if (ImGui::BeginMenu("Window"))
         {
-            if (ImGui::MenuItem("About", NULL, &about->open)) {
-                about->open = true;
+            if (ImGui::MenuItem("About", NULL, &about->GetOpen())) {
+                about->SetOpen(true);
             }
-            if (ImGui::MenuItem("Console Log", NULL, &console->open)) {
-                console->open = true;
+            if (ImGui::MenuItem("Console Log", NULL, &console->GetOpen())) {
+                console->SetOpen(true);
             }
-            if (ImGui::MenuItem("Configuration", NULL, &config->open)) {
-                config->open = true;
+            if (ImGui::MenuItem("Configuration", NULL, &config->GetOpen())) {
+                config->SetOpen(true);
             }
-            if (ImGui::MenuItem("Model", NULL, &model->open)) {
-                model->open = true;
+            if (ImGui::MenuItem("Model", NULL, &model->GetOpen())) {
+                model->SetOpen(true);
             }
             ImGui::EndMenu();
         }

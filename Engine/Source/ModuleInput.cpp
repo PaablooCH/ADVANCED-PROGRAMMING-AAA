@@ -34,6 +34,7 @@ bool ModuleInput::Init()
 // Called every draw update
 update_status ModuleInput::Update()
 {
+    bool panelFocus = App->editor->FocusPanels();
     SDL_Event sdlEvent;
     keyboard = SDL_GetKeyboardState(NULL);
 
@@ -51,6 +52,7 @@ update_status ModuleInput::Update()
                 }
                 break;
             case SDL_MOUSEBUTTONUP:
+                if (panelFocus) { break; }
                 if (sdlEvent.button.button == SDL_BUTTON_LEFT && keyboard[SDL_SCANCODE_LALT]) {
                     App->camera->SetRotateOption(!App->camera->GetRotationOption());
                     App->editor->logs.emplace_back("Rotation Option changed");
@@ -63,6 +65,7 @@ update_status ModuleInput::Update()
                 }
                 break;
             case SDL_MOUSEMOTION:
+                if (panelFocus) { break; }
                 if (sdlEvent.motion.state == SDL_BUTTON_LMASK) { //Mouse Left button
                     
                 }
@@ -110,6 +113,7 @@ update_status ModuleInput::Update()
                 }
                 break;
             case SDL_MOUSEWHEEL:
+                if (panelFocus) { break; }
                 if (sdlEvent.wheel.y > 0) // scroll up
                 {
                     if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
@@ -136,6 +140,7 @@ update_status ModuleInput::Update()
                 break;
         }
     }
+    if (panelFocus) { return UPDATE_CONTINUE; }
 
     if (keyboard[SDL_SCANCODE_ESCAPE]) {
         return UPDATE_STOP;

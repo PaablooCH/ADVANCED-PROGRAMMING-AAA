@@ -7,6 +7,8 @@
 #include "imgui.h"
 #include <vector>
 
+#pragma comment(lib, "dxgi")
+
 PanelConfig::PanelConfig(const char* title) : Panel(title)
 {
 }
@@ -14,11 +16,13 @@ PanelConfig::PanelConfig(const char* title) : Panel(title)
 bool PanelConfig::Draw()
 {
     if (!open) {
+        focus = false;
         return false;
     }
-    ImGui::SetNextWindowSize(ImVec2(420, 400), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(420, 400), ImGuiCond_Once);
     if (!ImGui::Begin(title, &open))
     {
+        focus = false;
         ImGui::End();
         return false;
     }
@@ -46,13 +50,13 @@ bool PanelConfig::Draw()
             App->window->SetBrightness(brightness);
         }
 
-        static int widht = App->window->width;
-        if (ImGui::SliderInt("Widht", &widht, 0, App->window->maxWidht)) {
+        static int widht = App->window->GetWidht();
+        if (ImGui::SliderInt("Widht", &widht, 0, App->window->GetMaxWidht())) {
             App->window->SetWidht(widht);
         }
 
-        static int height = App->window->height;
-        if (ImGui::SliderInt("Height", &height, 0, App->window->maxHeight)) {
+        static int height = App->window->GetHeight();
+        if (ImGui::SliderInt("Height", &height, 0, App->window->GetMaxHeight())) {
             App->window->SetHeight(height);
         }
 
@@ -88,7 +92,7 @@ bool PanelConfig::Draw()
         ImGui::TextUnformatted(":");
 
         ImGui::SetNextItemWidth(195);
-        if (ImGui::ColorPicker3("##Background color1", (float*)&background, ImGuiColorEditFlags_PickerHueBar | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs))
+        if (ImGui::ColorPicker3("##Background color1", (float*)&background, ImGuiColorEditFlags_PickerHueBar | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha))
         {
             App->renderer->backgroundRGBA[0] = background[0];
             App->renderer->backgroundRGBA[1] = background[1];
@@ -97,22 +101,23 @@ bool PanelConfig::Draw()
         }
         ImGui::SameLine();
         ImGui::SetNextItemWidth(195);
-        if (ImGui::ColorPicker3("##Background color2", (float*)&background, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs))
+        if (ImGui::ColorPicker3("##Background color2", (float*)&background, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha))
         {
             App->renderer->backgroundRGBA[0] = background[0];
             App->renderer->backgroundRGBA[1] = background[1];
             App->renderer->backgroundRGBA[2] = background[2];
             App->renderer->backgroundRGBA[3] = background[3];
         }
+        //TODO eliminar
         ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##Background input 1", (float*)&background, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float)) {
+        if (ImGui::ColorEdit4("##Background input 1", (float*)&background, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
             App->renderer->backgroundRGBA[0] = background[0];
             App->renderer->backgroundRGBA[1] = background[1];
             App->renderer->backgroundRGBA[2] = background[2];
             App->renderer->backgroundRGBA[3] = background[3];
         }
         ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##Background input 2", (float*)&background, ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float)) {
+        if (ImGui::ColorEdit4("##Background input 2", (float*)&background, ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
             App->renderer->backgroundRGBA[0] = background[0];
             App->renderer->backgroundRGBA[1] = background[1];
             App->renderer->backgroundRGBA[2] = background[2];
@@ -130,44 +135,65 @@ bool PanelConfig::Draw()
         ImGui::TextUnformatted(":");
 
         ImGui::SetNextItemWidth(195);
-        if (ImGui::ColorPicker3("##Grid color1", (float*)&grid, ImGuiColorEditFlags_PickerHueBar | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs))
+        if (ImGui::ColorPicker3("##Grid color1", (float*)&grid, ImGuiColorEditFlags_PickerHueBar | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha))
         {
             App->renderer->SetColorGrid(float3(grid[0], grid[1], grid[2]));
         }
         ImGui::SameLine();
         ImGui::SetNextItemWidth(195);
-        if (ImGui::ColorPicker3("##Grid color2", (float*)&grid, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs))
+        if (ImGui::ColorPicker3("##Grid color2", (float*)&grid, ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha))
         {
             App->renderer->SetColorGrid(float3(grid[0], grid[1], grid[2]));
         }
+        //TODO eliminar
         ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##Grid input 1", (float*)&grid, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float)) {
+        if (ImGui::ColorEdit4("##Grid input 1", (float*)&grid, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
             App->renderer->SetColorGrid(float3(grid[0], grid[1], grid[2]));
         }
         ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##grid input 2", (float*)&grid, ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float)) {
+        if (ImGui::ColorEdit4("##grid input 2", (float*)&grid, ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
             App->renderer->SetColorGrid(float3(grid[0], grid[1], grid[2]));
         }
 
     }
     if (ImGui::CollapsingHeader("Camera")) { //TODO acabar
-        float angley = 0.f;
+        float angleY = 0.f;
+        float angleX = 0.f;
+        float nearPlane = App->camera->GetNearPlane();
+        float farPlane = App->camera->GetFarPlane();
         float speed = App->camera->GetSpeed();
         bool rotationOption = App->camera->GetRotationOption();
-
-        if (ImGui::SliderFloat("Rotate X", &angley, -1, 1)) {
-            App->camera->RotationCamera(0.f, std::move(angley));
+        if (ImGui::SliderFloat("Near Plane", &nearPlane, 0.1f, farPlane - 1.f)) {
+            App->camera->SetPlaneDistances(nearPlane, farPlane);
         }
-        if (ImGui::SliderFloat("Rotate Y", &angley, -1, 1)) {
-            App->camera->RotationCamera(0.f, std::move(angley));
+        if (ImGui::SliderFloat("Far Plane", &farPlane, nearPlane + 1.f, 1000.f)) {
+            App->camera->SetPlaneDistances(nearPlane, farPlane);
         }
         if (ImGui::SliderFloat("Speed", &speed, 0.1f, 20.f)) {
             App->camera->SetSpeed(speed);
         }
+        if (ImGui::SliderFloat("Rotate X", &angleX, -10, 10)) {
+            if (!rotationOption) {
+                App->camera->RotationCamera(std::move(angleX), 0.f);
+            }
+            if (rotationOption) {
+                App->camera->OrbitObject(std::move(angleX), 0.f);
+            }
+        }
+        if (ImGui::SliderFloat("Rotate Y", &angleY, -10, 10)) {
+            if (!rotationOption) { 
+                App->camera->RotationCamera(0.f, std::move(angleY)); 
+            }
+            if (rotationOption) {
+                App->camera->OrbitObject(0.f, std::move(angleY));
+            }
+        }
         if (ImGui::Checkbox("Rotation Option", &rotationOption)) {
             App->camera->SetRotateOption(rotationOption);
         }
-        if (ImGui::SmallButton("Focus Model")) { App->camera->LookObject(); }
+        if (ImGui::SmallButton("Focus Model")) { 
+            App->camera->LookObject(); 
+        }
     }
     if (ImGui::CollapsingHeader("Hardware")) {
         SDL_version sdl_ver;
@@ -234,8 +260,48 @@ bool PanelConfig::Draw()
         SDL_GetCurrentVideoDriver();
         ImGui::Text("GPU:");
         ImGui::SameLine();
-        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", SDL_GetCurrentVideoDriver()); //TODO falta la gpu
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_RENDERER));
+
+        ImGui::Text("Brand:");
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%s", glGetString(GL_VENDOR));
+
+        UINT dxgiFactFlags = 0;
+        dxgiFactFlags |= DXGI_CREATE_FACTORY_DEBUG;
+        CreateDXGIFactory2(dxgiFactFlags, IID_PPV_ARGS(&pDXGIFactory));
+
+        IDXGIAdapter* tempAdapter;
+        UINT ordinalAdapter = 0;
+        pDXGIFactory->EnumAdapters(ordinalAdapter, &tempAdapter); // Get first adapter
+
+        DXGI_ADAPTER_DESC desc;
+        tempAdapter->GetDesc(&desc);
+        tempAdapter->QueryInterface(&pDXGIAdapter);
+        tempAdapter->Release();
+        pDXGIAdapter->QueryVideoMemoryInfo(0, DXGI_MEMORY_SEGMENT_GROUP_LOCAL, &localVideoMemoryInfo);
+
+        ImGui::Text("VRAM Budget:");
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.2f Mb", localVideoMemoryInfo.Budget * 0.00000001f);
+
+        ImGui::Text("VRAM Usage:");
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.2f Mb", localVideoMemoryInfo.CurrentUsage * 0.00000001f);
+
+        ImGui::Text("VRAM Available:");
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.2f Mb", localVideoMemoryInfo.AvailableForReservation * 0.00000001f);
+
+        ImGui::Text("VRAM Reserved:");
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.2f Mb", localVideoMemoryInfo.CurrentReservation * 0.00000001f);
+        ImGui::Separator();
+
+        pDXGIFactory->Release();
+        pDXGIAdapter->Release();
     }
+
+    focus = ImGui::IsWindowFocused();
 
     ImGui::End();
 	return true;

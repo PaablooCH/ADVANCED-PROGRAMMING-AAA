@@ -22,9 +22,6 @@
     <ClCompile Include="ModuleProgram.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleRenderExercise.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -232,9 +229,6 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="ModuleProgram.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleRenderExercise.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h">

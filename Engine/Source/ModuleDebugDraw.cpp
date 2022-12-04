@@ -619,7 +619,7 @@ update_status  ModuleDebugDraw::Update()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleDebugDraw::Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height, float3 color)
+void ModuleDebugDraw::Draw(const float4x4& view, const float4x4& proj, unsigned width, unsigned height, const float3& color)
 {
     implementation->width     = width;
     implementation->height    = height;

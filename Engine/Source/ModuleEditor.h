@@ -22,12 +22,17 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
+	bool FocusPanels();
 	inline void ClearLog() {
 		logs.clear();
 	}
 
-	std::vector<float> GetFps();
-	std::vector<float> GetMili();
+	inline const std::vector<float>& GetFps() {
+		return fpsLogs;
+	}
+	inline const std::vector<float>& GetMili() {
+		return miliLogs;
+	}
 
 	std::vector<const char*> logs;
 

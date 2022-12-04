@@ -13,11 +13,13 @@ PanelModel::PanelModel(const char* title) : Panel(title)
 bool PanelModel::Draw()
 {
     if (!open) {
+        focus = false;
         return false;
     }
-    ImGui::SetNextWindowSize(ImVec2(300, 480), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(300, 480), ImGuiCond_Once);
     if (!ImGui::Begin(title, &open))
     {
+        focus = false;
         ImGui::End();
         return false;
     }
@@ -33,7 +35,7 @@ bool PanelModel::Draw()
     ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.2f, 1.0f), "%f, %f, %f, %f", matrix.Row(0).x, matrix.Row(0).y, matrix.Row(0).z, matrix.Row(0).z);
     ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "%f, %f, %f, %f", matrix.Row(1).x, matrix.Row(1).y, matrix.Row(1).z, matrix.Row(1).z);
     ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "%f, %f, %f, %f", matrix.Row(2).x, matrix.Row(2).y, matrix.Row(2).z, matrix.Row(2).z);
-    ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "%f, %f, %f, %f", matrix.Row(3).x, matrix.Row(3).y, matrix.Row(3).z, matrix.Row(3).z);
+    ImGui::TextColored(ImVec4(0.2f, 1.0f, 0.5f, 1.0f), "%f, %f, %f, %f", matrix.Row(3).x, matrix.Row(3).y, matrix.Row(3).z, matrix.Row(3).z);
 
     ImGui::Text("Center Point:");
     ImGui::SameLine();
@@ -72,6 +74,8 @@ bool PanelModel::Draw()
         }
     }
     
+    focus = ImGui::IsWindowFocused();
+
     ImGui::End();
 	return true;
 }

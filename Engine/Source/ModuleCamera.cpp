@@ -12,13 +12,15 @@ ModuleCamera::ModuleCamera()
     frustum = new Frustum();
     rotateOption = false;
     speed = 10.f;
+    farPlane = 100.0f;
+    nearPlane = 0.1f;
 }
 
 bool ModuleCamera::Init()
 {
     frustum->SetKind(FrustumSpaceGL, FrustumRightHanded);
     frustum->SetFrame(float3(0, 2, 8), -float3::unitZ, float3::unitY);
-    frustum->SetViewPlaneDistances(0.1f, 100.0f);
+    frustum->SetViewPlaneDistances(nearPlane, farPlane);
     frustum->SetHorizontalFovAndAspectRatio(DEGTORAD * 90, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
     return true;
 }
@@ -54,23 +56,23 @@ void ModuleCamera::SetFOV(const float&& fov)
 
 void ModuleCamera::MoveFrontBack(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Front() * speed * multiplier * App->timer->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Front() * speed * multiplier * App->timer->GetDeltaTime());
 }
 
 void ModuleCamera::MoveLeftRight(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * speed * multiplier * App->timer->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->WorldRight() * speed * multiplier * App->timer->GetDeltaTime());
 }
 
 void ModuleCamera::GoUpDown(const float&& multiplier)
 {
-    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * speed * multiplier * App->timer->deltaTime);
+    frustum->SetPos(frustum->Pos() + frustum->Up().Normalized() * speed * multiplier * App->timer->GetDeltaTime());
 }
 
 void ModuleCamera::RotationCamera(const float&& multiplierX, const float&& multiplierY)
 {
-    Quat rotationX = Quat(float3::unitY, multiplierX * speed * App->timer->deltaTime * DEGTORAD);
-    Quat rotationY = Quat(frustum->WorldMatrix().WorldX(), multiplierY * speed * App->timer->deltaTime * DEGTORAD);
+    Quat rotationX = Quat(float3::unitY, multiplierX * speed * App->timer->GetDeltaTime() * DEGTORAD);
+    Quat rotationY = Quat(frustum->WorldMatrix().WorldX(), multiplierY * speed * App->timer->GetDeltaTime() * DEGTORAD);
 
     float3 up = rotationY.Transform(frustum->Up().Normalized());
     up = rotationX.Transform(up);
@@ -89,8 +91,8 @@ void ModuleCamera::OrbitObject(const float&& multiplierX, const float&& multipli
     float3 distance = frustum->Pos() - centerObject;
 
     // Rotate it
-    Quat rotationX = Quat(frustum->Up(), multiplierX * speed * App->timer->deltaTime * DEGTORAD);
-    Quat rotationY = Quat(frustum->WorldRight(), multiplierY * speed * App->timer->deltaTime * DEGTORAD);
+    Quat rotationX = Quat(frustum->Up(), multiplierX * speed * App->timer->GetDeltaTime() * DEGTORAD);
+    Quat rotationY = Quat(frustum->WorldRight(), multiplierY * speed * App->timer->GetDeltaTime() * DEGTORAD);
 
     // If we look at the object from the bottom or top dont rotate the object
     float cosAngle = Dot(frustum->Front(), float3::unitY);
@@ -136,8 +138,10 @@ void ModuleCamera::SetAspectRatio(const float& w, const float& h)
     frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov(), w / h);
 }
 
-void ModuleCamera::SetPlaneDistances(const float& nearPlane, const float& farPlane)
+void ModuleCamera::SetPlaneDistances(const float& n, const float& f)
 {
+    SetNearPlane(n);
+    SetFarPlane(f);
     frustum->SetViewPlaneDistances(nearPlane, farPlane);
 }
 

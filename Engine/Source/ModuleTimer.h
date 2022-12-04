@@ -12,10 +12,16 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
-	float deltaTime;
-	float miliseconds;
+	inline const float& GetDeltaTime() {
+		return deltaTime;
+	}
+	inline const float& GetMili() {
+		return miliseconds;
+	}
 
 private:
 	long lastTime;
+	float deltaTime;
+	float miliseconds;
 };
 
