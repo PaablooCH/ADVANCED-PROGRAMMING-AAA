@@ -5,6 +5,10 @@
 #include<list>
 
 class Panel;
+class PanelAbout;
+class PanelConfig;
+class PanelConsole;
+class PanelModel;
 
 class ModuleEditor : public Module
 {
@@ -28,9 +32,16 @@ public:
 	std::vector<const char*> logs;
 
 private:
+	bool DrawMainMenu();
+
 	std::vector<float> fpsLogs;
 	std::vector<float> miliLogs;
 	std::list<Panel*> panels;
+
+	PanelAbout* about = nullptr;
+	PanelConfig* config = nullptr;
+	PanelConsole* console = nullptr;
+	PanelModel* model = nullptr;
 
 	int loops;
 	int maxSizeFPS = 60;

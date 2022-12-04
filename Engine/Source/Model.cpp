@@ -28,9 +28,6 @@ Model::Model(const char* fileName)
 		LoadMeshes(scene->mMeshes, scene->mNumMeshes);
 
 		modelMatrix = float4x4::identity;
-		//for (int i = 0; i < meshes.size(); ++i) {
-
-		//}
 
 		//Get name model
 		if (std::string::npos != periodIdx)

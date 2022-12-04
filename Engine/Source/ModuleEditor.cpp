@@ -45,10 +45,10 @@ bool ModuleEditor::Start()
     ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
     ImGui_ImplOpenGL3_Init(GLSL_VERSION);
 
-    panels.push_back(new PanelConsole("Console"));
-    panels.push_back(new PanelConfig("Configuration"));
-    panels.push_back(new PanelAbout("About"));
-    panels.push_back(new PanelModel("Model Information"));
+    panels.push_back(console = new PanelConsole("Console"));
+    panels.push_back(config = new PanelConfig("Configuration"));
+    panels.push_back(about = new PanelAbout("About"));
+    panels.push_back(model = new PanelModel("Model Information"));
 
     return true;
 }
@@ -73,6 +73,10 @@ update_status ModuleEditor::PreUpdate()
 
 update_status ModuleEditor::Update()
 {
+
+    if (!DrawMainMenu()) {
+        return UPDATE_STOP;
+    }
 
     for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it) {
         (*it)->Draw();
@@ -116,4 +120,51 @@ std::vector<float> ModuleEditor::GetFps()
 std::vector<float> ModuleEditor::GetMili()
 {
     return miliLogs;
+}
+
+bool ModuleEditor::DrawMainMenu()
+{
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Exit")) {
+                return false;
+            }
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Window"))
+        {
+            if (ImGui::MenuItem("About", NULL, &about->open)) {
+                about->open = true;
+            }
+            if (ImGui::MenuItem("Console Log", NULL, &console->open)) {
+                console->open = true;
+            }
+            if (ImGui::MenuItem("Configuration", NULL, &config->open)) {
+                config->open = true;
+            }
+            if (ImGui::MenuItem("Model", NULL, &model->open)) {
+                model->open = true;
+            }
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Github"))
+        {
+            if (ImGui::MenuItem("Main Page")) {
+                ShellExecuteA(NULL, "open", "https://github.com/PaablooCH/ADVANCED-PROGRAMMING-AAA", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("Documentation")) {
+                ShellExecuteA(NULL, "open", "https://github.com/PaablooCH/ADVANCED-PROGRAMMING-AAA/wiki", NULL, NULL, SW_SHOWNORMAL);
+            }
+            if (ImGui::MenuItem("Download Latest")) {
+                ShellExecuteA(NULL, "open", "https://github.com/PaablooCH/ADVANCED-PROGRAMMING-AAA/releases", NULL, NULL, SW_SHOWNORMAL);
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+    return true;
 }

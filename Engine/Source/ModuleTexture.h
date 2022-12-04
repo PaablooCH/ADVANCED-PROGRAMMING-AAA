@@ -12,6 +12,6 @@ struct InfoTexture
 class ModuleTexture : public Module
 {
 public:
-	void LoadTexture(const char* nameTexture, InfoTexture& info);
+	bool LoadTexture(const char* nameTexture, InfoTexture& info);
 };
 

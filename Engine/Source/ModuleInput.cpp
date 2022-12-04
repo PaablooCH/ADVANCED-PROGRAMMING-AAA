@@ -4,7 +4,6 @@
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
-#include "ModuleRenderExercise.h"
 #include "SDL.h"
 #include "imgui_impl_sdl.h"
 
@@ -53,14 +52,14 @@ update_status ModuleInput::Update()
                 break;
             case SDL_MOUSEBUTTONUP:
                 if (sdlEvent.button.button == SDL_BUTTON_LEFT && keyboard[SDL_SCANCODE_LALT]) {
-                    App->camera->rotateOption = !App->camera->rotateOption;
+                    App->camera->SetRotateOption(!App->camera->GetRotationOption());
                     App->editor->logs.emplace_back("Rotation Option changed");
                 }
                 if (sdlEvent.button.button == SDL_BUTTON_RIGHT && keyboard[SDL_SCANCODE_RALT]) {
-                    App->camera->SetFOV(-5);
+                    App->camera->SetFOV(0.1f);
                 }
                 if (sdlEvent.button.button == SDL_BUTTON_RIGHT && keyboard[SDL_SCANCODE_LALT]) {
-                    App->camera->SetFOV(5);
+                    App->camera->SetFOV(-0.1f);
                 }
                 break;
             case SDL_MOUSEMOTION:
@@ -102,7 +101,7 @@ update_status ModuleInput::Update()
                     }
                 }
                 if (sdlEvent.motion.state == SDL_BUTTON_RMASK) { //Mouse Right button
-                    if (!App->camera->rotateOption) { //Rotate camera
+                    if (!App->camera->GetRotationOption()) { //Rotate camera
                         App->camera->RotationCamera(float(-sdlEvent.motion.xrel), float(-sdlEvent.motion.yrel));
                     }
                     else { //Rotate arround object
@@ -133,7 +132,7 @@ update_status ModuleInput::Update()
 
             case SDL_DROPFILE:
                 App->editor->logs.emplace_back("File dropped");
-                App->exercise->DropFile(sdlEvent.drop.file);
+                App->renderer->DropFile(sdlEvent.drop.file);
                 break;
         }
     }
@@ -193,16 +192,36 @@ update_status ModuleInput::Update()
         App->camera->LookObject();
     }
     if (keyboard[SDL_SCANCODE_UP]) {
-        App->camera->RotationCamera(0.f, 5.f);
+        if (!App->camera->GetRotationOption()) { //Rotate camera
+            App->camera->RotationCamera(0.f, 5.f);
+        }
+        else { //Rotate arround object
+            App->camera->OrbitObject(0.f, -5.f);
+        }
     }
     if (keyboard[SDL_SCANCODE_DOWN]) {
-        App->camera->RotationCamera(0.f, -5.f);
+        if (!App->camera->GetRotationOption()) { //Rotate camera
+            App->camera->RotationCamera(0.f, -5.f);
+        }
+        else { //Rotate arround object
+            App->camera->OrbitObject(0.f, 5.f);
+        }
     }
     if (keyboard[SDL_SCANCODE_LEFT]) {
-        App->camera->RotationCamera(5.f, 0.f);
+        if (!App->camera->GetRotationOption()) { //Rotate camera
+            App->camera->RotationCamera(5.f, 0.f);
+        }
+        else { //Rotate arround object
+            App->camera->OrbitObject(5.f, 0.f);
+        }
     }
     if (keyboard[SDL_SCANCODE_RIGHT]) {
-        App->camera->RotationCamera(-5.f, 0.f);
+        if (!App->camera->GetRotationOption()) { //Rotate camera
+            App->camera->RotationCamera(-5.f, 0.f);
+        }
+        else { //Rotate arround object
+            App->camera->OrbitObject(-5.f, 0.f);
+        }
     }
 
     return UPDATE_CONTINUE;

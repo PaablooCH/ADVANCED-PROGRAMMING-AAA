@@ -40,6 +40,10 @@ public:
 	{
 		return name;
 	}
+	inline const float4x4& GetMatrix()
+	{
+		return modelMatrix;
+	}
 
 private:
 	void LoadMaterials(aiMaterial** aiMaterial, const unsigned int& numMaterials);

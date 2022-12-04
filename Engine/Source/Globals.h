@@ -16,7 +16,7 @@ enum update_status
 // Constants -----------
 #define DEGTORAD 0.01745329251f
 #define RADTODEG 1.0f / DEGTORAD
-#define HIGH_LIMIT 0.006f          // Keep At/Below 60fps
+#define HIGH_LIMIT 0.006f          // Keep At/Below 144fps
 #define LOW_LIMIT 0.1f            // Keep At/Above 10fps
 
 // Configuration -----------

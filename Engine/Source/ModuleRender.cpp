@@ -5,6 +5,7 @@
 #include "ModuleEditor.h"
 #include "ModuleProgram.h"
 #include "ModuleDebugDraw.h"
+#include "Model.h"
 #include "SDL.h"
 
 ModuleRender::ModuleRender()
@@ -51,6 +52,7 @@ bool ModuleRender::Init()
 bool ModuleRender::Start()
 {
 	program = App->program->CreateProgram();
+	model = new Model("Models/Bakerhouse.fbx");
 	return true;
 }
 
@@ -68,6 +70,7 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	model->Draw();
 	return UPDATE_CONTINUE;
 }
 
@@ -84,7 +87,7 @@ bool ModuleRender::CleanUp()
 	App->editor->logs.emplace_back("Destroying renderer");
 
 	glDeleteProgram(program);
-
+	delete model;
 	SDL_GL_DeleteContext(context);
 
 	return true;
@@ -95,3 +98,8 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 	App->camera->SetAspectRatio(float(width), float(height));
 }
 
+void ModuleRender::DropFile(const char* pathFile)
+{
+	delete model;
+	model = new Model(pathFile);
+}

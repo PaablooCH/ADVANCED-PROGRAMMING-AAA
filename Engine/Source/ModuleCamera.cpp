@@ -1,7 +1,7 @@
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
 #include "ModuleTimer.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleRender.h"
 #include "Model.h"
 #include "Application.h"
 #include "MathGeoLib/Math/float3x3.h"
@@ -47,9 +47,9 @@ bool ModuleCamera::CleanUp()
     return true;
 }
 
-void ModuleCamera::SetFOV(const float&& deg)
+void ModuleCamera::SetFOV(const float&& fov)
 {
-    frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov() + DEGTORAD * deg, frustum->AspectRatio());
+    frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov() + fov, frustum->AspectRatio());
 }
 
 void ModuleCamera::MoveFrontBack(const float&& multiplier)
@@ -84,7 +84,7 @@ void ModuleCamera::RotationCamera(const float&& multiplierX, const float&& multi
 
 void ModuleCamera::OrbitObject(const float&& multiplierX, const float&& multiplierY)
 {
-    float3 centerObject = App->exercise->GetModel()->GetCenter();
+    float3 centerObject = App->renderer->GetModel()->GetCenter();
     // Get orbit point (object transform)
     float3 distance = frustum->Pos() - centerObject;
 
@@ -127,7 +127,7 @@ void ModuleCamera::PosCameraViewObject(Model* model)
 
 void ModuleCamera::LookObject()
 {
-    LookAt(App->exercise->GetModel()->GetCenter());
+    LookAt(App->renderer->GetModel()->GetCenter());
 }
 
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)
@@ -136,14 +136,9 @@ void ModuleCamera::SetAspectRatio(const float& w, const float& h)
     frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov(), w / h);
 }
 
-void ModuleCamera::SetPlaneDistances(const float& near, const float& far)
+void ModuleCamera::SetPlaneDistances(const float& nearPlane, const float& farPlane)
 {
-    frustum->SetViewPlaneDistances(0.1f, 100.0f);
-}
-
-void ModuleCamera::Position(const vec& pos)
-{
-    frustum->SetPos(pos); //TODO inservible
+    frustum->SetViewPlaneDistances(nearPlane, farPlane);
 }
 
 void ModuleCamera::Orientation(const vec& up)

@@ -3,7 +3,7 @@
 #include "ModuleEditor.h"
 #include "DirectXTex/DirectXTex.h"
 
-void ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
+bool ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
 {
 	DirectX::ScratchImage scratchImage;
 	const size_t cSize = strlen(nameTexture) + 1;
@@ -14,7 +14,10 @@ void ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
     if (success < 0) {
         success = LoadFromTGAFile(wc, NULL, scratchImage);
         if (success < 0) {
-            LoadFromWICFile(wc, DirectX::WIC_FLAGS_NONE, NULL, scratchImage);
+            success = LoadFromWICFile(wc, DirectX::WIC_FLAGS_NONE, NULL, scratchImage);
+			if (success < 0) {
+				return false;
+			}
         }
     }
     
@@ -73,4 +76,5 @@ void ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
 		pathFile.erase(periodIdx);
 	}
 	info.path = pathFile;
+	return true;
 }

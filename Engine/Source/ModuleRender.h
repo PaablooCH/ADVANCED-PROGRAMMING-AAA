@@ -8,6 +8,8 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
 
+class Model;
+
 class ModuleRender : public Module
 {
 public:
@@ -21,6 +23,11 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 	void WindowResized(unsigned width, unsigned height);
+	void DropFile(const char* pathFile);
+
+	inline Model* GetModel() {
+		return model;
+	}
 	inline const unsigned& GetProgram() {
 		return program;
 	}
@@ -36,6 +43,7 @@ public:
 public:
 	void* context;
 	unsigned program;
+	Model* model;
 
 	float3 colorGrid;
 };

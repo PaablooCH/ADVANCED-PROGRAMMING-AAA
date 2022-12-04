@@ -9,6 +9,9 @@ PanelConsole::PanelConsole(const char* title) : Panel(title)
 
 bool PanelConsole::Draw()
 {
+    if (!open) {
+        return false;
+    }
     ImGui::SetNextWindowSize(ImVec2(300, 480), ImGuiCond_Always);
     if (!ImGui::Begin(title, &open))
     {

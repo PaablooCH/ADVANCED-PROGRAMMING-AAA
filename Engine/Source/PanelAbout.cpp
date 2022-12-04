@@ -9,6 +9,9 @@ PanelAbout::PanelAbout(const char* title) : Panel(title)
 
 bool PanelAbout::Draw()
 {
+    if (!open) {
+        return false;
+    }
     ImGui::SetNextWindowSize(ImVec2(400, 400), ImGuiCond_Always);
     if (!ImGui::Begin(title, &open))
     {
