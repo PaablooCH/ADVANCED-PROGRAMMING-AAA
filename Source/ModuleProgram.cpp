@@ -54,8 +54,8 @@ int ModuleProgram::CompileShader(GLenum type, const char* source)
 
 int ModuleProgram::CreateProgram()
 {
-	int fragment = CompileShader(GL_FRAGMENT_SHADER, LoadShaderSource("fragmentShader.glsl"));
-	int vertex = CompileShader(GL_VERTEX_SHADER, LoadShaderSource("vertexShader.glsl"));
+	int fragment = CompileShader(GL_FRAGMENT_SHADER, LoadShaderSource("Assets/fragmentShader.glsl"));
+	int vertex = CompileShader(GL_VERTEX_SHADER, LoadShaderSource("Assets/vertexShader.glsl"));
 
 	unsigned programId = glCreateProgram();
 	glAttachShader(programId, vertex);

@@ -56,7 +56,8 @@ bool ModuleTexture::LoadTexture(const char* nameTexture, InfoTexture& info)
 		type = GL_UNSIGNED_BYTE;
 		break;
 	default:
-		assert(false && "Unsupported format");
+		App->editor->logs.emplace_back("Unsupported format");
+		return false;
 	}
 	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, metadata.width, metadata.height, 0, format, type, image->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
