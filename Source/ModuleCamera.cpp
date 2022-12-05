@@ -134,7 +134,6 @@ void ModuleCamera::LookObject()
 
 void ModuleCamera::SetAspectRatio(const float& w, const float& h)
 {
-    App->editor->logs.emplace_back("Aspect Ratio changed");
     frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov(), w / h);
 }
 
