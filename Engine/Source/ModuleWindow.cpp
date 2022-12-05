@@ -5,6 +5,10 @@
 
 ModuleWindow::ModuleWindow()
 {
+	borderless = false;
+	resizable = true;
+	fullScreen = false;
+	fullDsktp = false;
 }
 
 // Destructor
@@ -35,22 +39,22 @@ bool ModuleWindow::Init()
 		height = maxHeight * 0.9f;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
-		if(FULLSCREEN == true)
+		if(fullScreen == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if (BORDERLESS == true)
+		if (borderless== true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if (RESIZABLE == true)
+		if (resizable == true)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if (FULLSCREEN_DESKTOP == true)
+		if (fullDsktp == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
@@ -75,7 +79,6 @@ bool ModuleWindow::Init()
 // Called before quitting
 bool ModuleWindow::CleanUp()
 {
-	//LOG_ENGINE("Destroying SDL window and quitting all SDL systems");
 	App->editor->logs.emplace_back("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
@@ -89,18 +92,21 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::SetFullScreen(bool& fullScreen)
+void ModuleWindow::SetFullScreen(bool& full)
 {
+	fullScreen = full;
 	fullScreen ? SDL_SetWindowFullscreen(window, SDL_TRUE) : SDL_SetWindowFullscreen(window, SDL_FALSE);
 }
 
-void ModuleWindow::SetBorderless(bool& borderless)
+void ModuleWindow::SetBorderless(bool& bordless)
 {
+	borderless = bordless;
 	borderless ? SDL_SetWindowBordered(window, SDL_FALSE) : SDL_SetWindowBordered(window, SDL_TRUE);
 }
 
-void ModuleWindow::SetResizable(bool& resizable)
+void ModuleWindow::SetResizable(bool& resi)
 {
+	resizable = resi;
 	resizable ? SDL_SetWindowResizable(window, SDL_TRUE) : SDL_SetWindowResizable(window, SDL_FALSE);
 }
 
@@ -119,6 +125,11 @@ void ModuleWindow::SetHeight(int& h)
 {
 	height = h;
 	SDL_SetWindowSize(window, width, height);
+}
+
+void ModuleWindow::SetPosition(const int& x, const int& y)
+{
+	SDL_SetWindowPosition(window, x, y);
 }
 
 float ModuleWindow::GetBrightness()

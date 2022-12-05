@@ -22,10 +22,6 @@ enum update_status
 // Configuration -----------
 #define SCREEN_WIDTH 1300
 #define SCREEN_HEIGHT 800
-#define FULLSCREEN false
-#define BORDERLESS false
-#define RESIZABLE true
-#define FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define TITLE "Deus Ex Machina"
 #define GLSL_VERSION "#version 440"

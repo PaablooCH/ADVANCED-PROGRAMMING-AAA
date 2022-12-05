@@ -39,10 +39,10 @@ bool PanelConfig::Draw()
     }
     if (ImGui::CollapsingHeader("Window"))
     {
-        bool fullscreen = false;
-        bool resizable = true;
-        bool borderless = false;
-        bool fullscreenDsktp = false; //TODO implementar
+        bool fullscreen = App->window->GetFullScreen();
+        bool resizable = App->window->GetResizable();
+        bool borderless = App->window->GetBorderless();
+        bool fullDsktp = App->window->GetFullDsktp(); //TODO implementar
 
         float brightness = App->window->GetBrightness();
 
@@ -60,11 +60,9 @@ bool PanelConfig::Draw()
             App->window->SetHeight(height);
         }
 
-
         if (ImGui::Checkbox("FULLSCREEN   |  ", &fullscreen))
         {
             App->window->SetFullScreen(fullscreen);
-
         }
         ImGui::SameLine();
         if (ImGui::Checkbox("RESIZABLE", &resizable))
@@ -77,9 +75,24 @@ bool PanelConfig::Draw()
             App->window->SetBorderless(borderless);
         }
         ImGui::SameLine();
-        if (ImGui::Checkbox("FULLSCREEN DSKTP", &fullscreenDsktp))
+        if (ImGui::Checkbox("FULLSCREEN DSKTP", &fullDsktp))
         {
-            //TODO Implementar
+            App->window->SetFullDsktp(fullDsktp);
+            if (fullDsktp) {
+                widht = App->window->GetMaxWidht();
+                height = App->window->GetMaxHeight() - 30;
+                int x = 0;
+                int y = 30;
+                App->window->SetPosition(x, y);
+                App->window->SetWidht(widht);
+                App->window->SetHeight(height);
+            }
+            else {
+                widht = App->window->GetMaxWidht() * 0.9f;
+                height = App->window->GetMaxHeight() * 0.9f;
+                App->window->SetWidht(widht);
+                App->window->SetHeight(height);
+            }
         }
     }
     if (ImGui::CollapsingHeader("Render"))
@@ -108,21 +121,6 @@ bool PanelConfig::Draw()
             App->renderer->backgroundRGBA[2] = background[2];
             App->renderer->backgroundRGBA[3] = background[3];
         }
-        //TODO eliminar
-        ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##Background input 1", (float*)&background, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputRGB | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
-            App->renderer->backgroundRGBA[0] = background[0];
-            App->renderer->backgroundRGBA[1] = background[1];
-            App->renderer->backgroundRGBA[2] = background[2];
-            App->renderer->backgroundRGBA[3] = background[3];
-        }
-        ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##Background input 2", (float*)&background, ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
-            App->renderer->backgroundRGBA[0] = background[0];
-            App->renderer->backgroundRGBA[1] = background[1];
-            App->renderer->backgroundRGBA[2] = background[2];
-            App->renderer->backgroundRGBA[3] = background[3];
-        }
 
         ImGui::Separator();
 
@@ -145,18 +143,9 @@ bool PanelConfig::Draw()
         {
             App->renderer->SetColorGrid(float3(grid[0], grid[1], grid[2]));
         }
-        //TODO eliminar
-        ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##Grid input 1", (float*)&grid, ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
-            App->renderer->SetColorGrid(float3(grid[0], grid[1], grid[2]));
-        }
-        ImGui::SetNextItemWidth(390);
-        if (ImGui::ColorEdit4("##grid input 2", (float*)&grid, ImGuiColorEditFlags_DisplayHSV | ImGuiColorEditFlags_InputHSV | ImGuiColorEditFlags_Float | ImGuiColorEditFlags_NoAlpha)) {
-            App->renderer->SetColorGrid(float3(grid[0], grid[1], grid[2]));
-        }
 
     }
-    if (ImGui::CollapsingHeader("Camera")) { //TODO acabar
+    if (ImGui::CollapsingHeader("Camera")) {
         float angleY = 0.f;
         float angleX = 0.f;
         float nearPlane = App->camera->GetNearPlane();

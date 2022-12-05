@@ -140,11 +140,13 @@ update_status ModuleInput::Update()
                 break;
         }
     }
-    if (panelFocus) { return UPDATE_CONTINUE; }
-
+    
     if (keyboard[SDL_SCANCODE_ESCAPE]) {
         return UPDATE_STOP;
     }
+    
+    if (panelFocus) { return UPDATE_CONTINUE; }
+
     if (keyboard[SDL_SCANCODE_W]) { //MoveForward
         if (keyboard[SDL_SCANCODE_LSHIFT] || keyboard[SDL_SCANCODE_RSHIFT]) {
             App->camera->MoveFrontBack(2.f);

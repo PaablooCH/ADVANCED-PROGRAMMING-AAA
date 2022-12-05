@@ -21,12 +21,28 @@ public:
 	// Called before quitting
 	bool CleanUp() override;
 
-	void SetFullScreen(bool& fullScreen);
-	void SetBorderless(bool& borderless);
-	void SetResizable(bool& resizable);
+	void SetFullScreen(bool& full);
+	inline bool& GetFullScreen() {
+		return fullScreen;
+	};
+	void SetBorderless(bool& bordless);
+	inline bool& GetBorderless() {
+		return borderless;
+	};
+	void SetResizable(bool& resi);
+	inline bool& GetResizable() {
+		return resizable;
+	}
+	inline void SetFullDsktp(const bool& fDsktp) {
+		fullDsktp = fDsktp;
+	}
+	inline bool& GetFullDsktp() {
+		return fullDsktp;
+	}
 	void SetBrightness(float& brightness);
 	void SetWidht(int& w);
 	void SetHeight(int& h);
+	void SetPosition(const int& x, const int& y);
 
 	float GetBrightness();
 
@@ -51,6 +67,8 @@ public:
 
 private:
 	int width, height, maxWidht, maxHeight;
+
+	bool fullScreen, borderless, resizable, fullDsktp;
 
 };
 

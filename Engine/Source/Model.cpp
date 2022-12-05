@@ -130,7 +130,7 @@ void Model::LoadMeshes(aiMesh** aiMesh, const unsigned int& numMeshes)
 
 void Model::CalculateCenter()
 {
-	center = float3(minPoint.x + (maxPoint.x - minPoint.x) / 2.0f, //TODO Aplicar Transformaciones del objeto
+	center = float3(minPoint.x + (maxPoint.x - minPoint.x) / 2.0f,
 		minPoint.y + (maxPoint.y - minPoint.y) / 2.0f,
 		minPoint.z + (maxPoint.z - minPoint.z) / 2.0f);
 }

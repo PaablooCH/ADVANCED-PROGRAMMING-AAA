@@ -82,7 +82,6 @@ update_status ModuleEditor::Update()
         (*it)->Draw();
     }
 
-    //ImGui::ShowDemoWindow(); //TODO eliminarlo al final
     return UPDATE_CONTINUE;
 }
 
