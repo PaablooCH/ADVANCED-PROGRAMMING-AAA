@@ -51,7 +51,14 @@ bool ModuleCamera::CleanUp()
 
 void ModuleCamera::SetFOV(const float&& fov)
 {
-    frustum->SetHorizontalFovAndAspectRatio(frustum->HorizontalFov() + fov, frustum->AspectRatio());
+    float recalculateFov = frustum->HorizontalFov() + fov;
+    if (recalculateFov > 3) {
+        recalculateFov = 3;
+    }
+    else if (recalculateFov < 1) {
+        recalculateFov = 1;
+    }
+    frustum->SetHorizontalFovAndAspectRatio(recalculateFov, frustum->AspectRatio());
 }
 
 void ModuleCamera::MoveFrontBack(const float&& multiplier)

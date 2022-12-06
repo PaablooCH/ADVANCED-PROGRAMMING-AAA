@@ -129,18 +129,10 @@ bool ModuleEditor::DrawMainMenu()
 
         if (ImGui::BeginMenu("Window"))
         {
-            if (ImGui::MenuItem("About", NULL, &about->GetOpen())) {
-                about->SetOpen(true);
-            }
-            if (ImGui::MenuItem("Console Log", NULL, &console->GetOpen())) {
-                console->SetOpen(true);
-            }
-            if (ImGui::MenuItem("Configuration", NULL, &config->GetOpen())) {
-                config->SetOpen(true);
-            }
-            if (ImGui::MenuItem("Model", NULL, &model->GetOpen())) {
-                model->SetOpen(true);
-            }
+            ImGui::MenuItem("About", NULL, &about->GetOpen());
+            ImGui::MenuItem("Console Log", NULL, &console->GetOpen());
+            ImGui::MenuItem("Configuration", NULL, &config->GetOpen());
+            ImGui::MenuItem("Model", NULL, &model->GetOpen());
             ImGui::EndMenu();
         }
 
